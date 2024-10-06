@@ -260,9 +260,17 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 - `DatabaseConnectionException` - thrown when a connection cannot be established.
 - `DatabaseTransactionException` - thrown when an error occurs during a transaction.
 
-## Find a bug?
+## Contribute
 
-There's an [issue](https://github.com/pimbrouwers/Leger/issues) for that.
+Thank you for considering contributing to Leger, and to those who have already contributed! We appreciate (and actively resolve) PRs of all shapes and sizes.
+
+We kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/Leger/issues) or open a [discussion](https://github.com/pimbrouwers/Leger/discussions).
+
+If functionality is added to the API, or changed, please kindly update the relevant [document](https://github.com/pimbrouwers/Leger/tree/master/docs). Unit tests must also be added and/or updated before a pull request can be successfully merged.
+
+Only pull requests which pass all build checks and comply with the general coding guidelines can be approved.
+
+If you have any further questions, submit an [issue](https://github.com/pimbrouwers/Leger/issues) or open a [discussion](https://github.com/pimbrouwers/Leger/discussions).
 
 ## License
 
