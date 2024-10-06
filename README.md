@@ -1,7 +1,7 @@
 # Leger - Classy C# data access that's as light as air.
 
 [![NuGet Version](https://img.shields.io/nuget/v/Leger.svg)](https://www.nuget.org/packages/Leger)
-[![build](https://github.com/nhlpa/Leger/actions/workflows/build.yml/badge.svg)](https://github.com/nhlpa/Leger/actions/workflows/build.yml)
+[![build](https://github.com/pimbrouwers/Leger/actions/workflows/build.yml/badge.svg)](https://github.com/pimbrouwers/Leger/actions/workflows/build.yml)
 
 Leger is a lightweight library that aims to make working with [ADO.NET](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-overview) from C# *a lot* simpler. Functionality is delivered through an API that bears a resemblance to [Dapper](https://github.com/DapperLib/Dapper) with a focus on manual mapping and a few extra goodies built-in.
 
@@ -15,7 +15,7 @@ Leger is a lightweight library that aims to make working with [ADO.NET](https://
 
 ## Design Goals
 
-- Appear "native", augmenting the base ADO.NET functionality as little as possible and adhering to internal naming conventions.
+- Augment the base ADO.NET functionality as little as possible and adhering to internal naming conventions.
 - Encourage manual mappings by providing a succinct and safe methodology to obtain values from tabular data.
 - Provide an easy to reason about execution model.
 - Support asynchronous database workflows.
@@ -262,8 +262,8 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 
 ## Find a bug?
 
-There's an [issue](https://github.com/nhlpa/Leger/issues) for that.
+There's an [issue](https://github.com/pimbrouwers/Leger/issues) for that.
 
 ## License
 
-Built with ♥ by [NHLPA Engineering](https://github.com/nhlpa) in Toronto, ON. Licensed under [MIT](https://github.com/nhlpa/Leger/blob/master/LICENSE).
+Built with ♥ by [Pim Brouwers](https://github.com/pimbrouwers) in Toronto, ON. Licensed under [MIT](https://github.com/pimbrouwers/Leger/blob/master/LICENSE).
