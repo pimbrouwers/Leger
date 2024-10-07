@@ -25,10 +25,10 @@ public class DbParamTests
     public void ShouldAddParams()
     {
         var p = new DbParams
-    {
-        { "key", 1 },
-        { "key2", 2 }
-    };
+        {
+            { "key", 1 },
+            { "key2", 2 }
+        };
         Assert.Equal(1, p["key"]);
         Assert.Equal(2, p["key2"]);
     }
@@ -37,14 +37,14 @@ public class DbParamTests
     public void ShouldCombineParams()
     {
         var p1 = new DbParams("key", 1)
-    {
-        { "key2", 2 }
-    };
+        {
+            { "key2", 2 }
+        };
 
         var p2 = new DbParams("key1", 3)
-    {
-        { "key2", "WRONG" }
-    };
+        {
+            { "key2", "WRONG" }
+        };
 
         p1.Add(p2);
 
