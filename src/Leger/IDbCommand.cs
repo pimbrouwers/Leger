@@ -3,8 +3,14 @@
 using System.Data;
 using System.Data.Common;
 
+/// <summary>
+/// Extensions for <see cref="IDbCommand"/>.
+/// </summary>
 public static class IDbCommandExtensions
 {
+    /// <summary>
+    /// Executes a command.
+    /// </summary>
     public static void Execute(
         this IDbCommand command,
         string commandText,
@@ -18,6 +24,9 @@ public static class IDbCommandExtensions
             cmd => cmd.ExecuteNonQuery());
     }
 
+    /// <summary>
+    /// Executes a command asynchronously.
+    /// </summary>
     public static Task ExecuteAsync(
         this IDbCommand command,
         string commandText,
@@ -32,6 +41,9 @@ public static class IDbCommandExtensions
             cmd => cmd.ExecuteNonQueryAsync(cancellationToken ?? CancellationToken.None));
     }
 
+    /// <summary>
+    /// Executes a command many times.
+    /// </summary>
     public static void ExecuteMany(
         this IDbCommand command,
         string commandText,
@@ -42,6 +54,9 @@ public static class IDbCommandExtensions
         command.DoMany(paramList, command => command.ExecuteNonQuery());
     }
 
+    /// <summary>
+    /// Executes a command many times asynchronously.
+    /// </summary>
     public static async Task ExecuteManyAsync(
         this IDbCommand command,
         string commandText,
@@ -54,6 +69,9 @@ public static class IDbCommandExtensions
             command.ExecuteNonQueryAsync(cancellationToken ?? CancellationToken.None));
     }
 
+    /// <summary>
+    /// Executes a command and returns a scalar.
+    /// </summary>
     public static object? Scalar(
         this IDbCommand command,
         string commandText,
@@ -67,6 +85,9 @@ public static class IDbCommandExtensions
             cmd => cmd.ExecuteScalar());
     }
 
+    /// <summary>
+    /// Executes a command and returns a scalar asynchronously.
+    /// </summary>
     public static Task<object?> ScalarAsync(
         this IDbCommand command,
         string commandText,
@@ -80,6 +101,9 @@ public static class IDbCommandExtensions
             cmd => cmd.ExecuteScalarAsync(cancellationToken ?? CancellationToken.None));
     }
 
+    /// <summary>
+    /// Executes a command and returns a scalar of type <typeparamref name="T"/>.
+    /// </summary>
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
         string commandText,
@@ -98,6 +122,9 @@ public static class IDbCommandExtensions
             });
     }
 
+    /// <summary>
+    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
         string commandText,
@@ -106,6 +133,9 @@ public static class IDbCommandExtensions
         CommandType commandType = CommandType.Text) =>
         command.Query(commandText, [], map, commandBehavior, commandType);
 
+    /// <summary>
+    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
         string commandText,
@@ -125,6 +155,9 @@ public static class IDbCommandExtensions
                 });
         }
 
+    /// <summary>
+    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
         string commandText,
@@ -134,6 +167,9 @@ public static class IDbCommandExtensions
         CancellationToken? cancellationToken = null) =>
         command.QueryAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// </summary>
     public static T? QuerySingle<T>(
         this IDbCommand command,
         string commandText,
@@ -152,6 +188,9 @@ public static class IDbCommandExtensions
             });
     }
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// </summary>
     public static T? QuerySingle<T>(
         this IDbCommand command,
         string commandText,
@@ -160,6 +199,9 @@ public static class IDbCommandExtensions
         CommandType commandType = CommandType.Text) =>
         command.QuerySingle(commandText, [], map, commandBehavior, commandType);
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<T?> QuerySingleAsync<T>(
         this IDbCommand command,
         string commandText,
@@ -179,6 +221,9 @@ public static class IDbCommandExtensions
             });
     }
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<T?> QuerySingleAsync<T>(
         this IDbCommand command,
         string commandText,
@@ -188,6 +233,9 @@ public static class IDbCommandExtensions
         CancellationToken? cancellationToken = null) =>
         command.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// </summary>
     public static T Read<T>(
         this IDbCommand command,
         string commandText,
@@ -206,6 +254,9 @@ public static class IDbCommandExtensions
             });
     }
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// </summary>
     public static T Read<T>(
         this IDbCommand command,
         string commandText,
@@ -214,6 +265,9 @@ public static class IDbCommandExtensions
         CommandType commandType = CommandType.Text) =>
         command.Read(commandText, [], map, commandBehavior, commandType);
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<T> ReadAsync<T>(
         this IDbCommand command,
         string commandText,
@@ -233,6 +287,9 @@ public static class IDbCommandExtensions
             });
     }
 
+    /// <summary>
+    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// </summary>
     public static Task<T> ReadAsync<T>(
         this IDbCommand command,
         string commandText,
