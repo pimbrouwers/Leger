@@ -3,8 +3,18 @@
 using System.Data;
 using System.Data.Common;
 
+/// <summary>
+/// Extensions for <see cref="IDataReader"/>.
+/// </summary>
 public static class IDataReaderExtensions
 {
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a collection of <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <returns></returns>
     public static IEnumerable<T> Map<T>(
         this IDataReader rd,
         Func<IDataReader, T> map)
@@ -19,6 +29,13 @@ public static class IDataReaderExtensions
         return records;
     }
 
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a single <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <returns></returns>
     public static T? MapFirst<T>(
         this IDataReader rd,
         Func<IDataReader, T> map)
@@ -33,16 +50,38 @@ public static class IDataReaderExtensions
         }
     }
 
+    /// <summary>
+    /// Attempts to advance the <see cref="IDataReader"/> then maps to a collection of <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <returns></returns>
     public static IEnumerable<T> MapNext<T>(
         this IDataReader rd,
         Func<IDataReader, T> map) =>
         rd.NextResult() ? rd.Map(map) : [];
 
+    /// <summary>
+    /// Attempts to advance the <see cref="IDataReader"/> then maps to a single <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <returns></returns>
     public static T? MapFirstNext<T>(
         this IDataReader rd,
         Func<IDataReader, T> map) =>
         rd.NextResult() ? rd.MapFirst(map) : default;
 
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a collection of <typeparamref name="T"/> asynchronously.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task<IEnumerable<T>> MapAsync<T>(
         this IDataReader rd,
         Func<IDataReader, T> map,
@@ -60,6 +99,14 @@ public static class IDataReaderExtensions
         return records;
     }
 
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a single <typeparamref name="T"/> asynchronously.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task<IEnumerable<T>> MapNextAsync<T>(
         this IDataReader rd,
         Func<IDataReader, T> map,
@@ -76,6 +123,14 @@ public static class IDataReaderExtensions
         return [];
     }
 
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a single <typeparamref name="T"/> asynchronously.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task<T?> MapFirstAsync<T>(
         this IDataReader rd,
         Func<IDataReader, T> map,
@@ -96,6 +151,14 @@ public static class IDataReaderExtensions
         }
     }
 
+    /// <summary>
+    /// Maps the <see cref="IDataReader"/> to a single <typeparamref name="T"/> asynchronously.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="rd"></param>
+    /// <param name="map"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task<T?> MapFirstNextAsync<T>(
         this IDataReader rd,
         Func<IDataReader, T> map,
