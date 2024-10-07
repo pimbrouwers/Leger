@@ -1,5 +1,6 @@
 namespace Leger.Tests;
 
+using System.Text;
 using Xunit;
 
 [Collection("TestDb")]
@@ -133,7 +134,7 @@ public class IDbDataRecordTests(TestDb testDb)
                 new("data", bytes),
                 rd => rd.ReadBytes("data"));
 
-        var resultStr = System.Text.Encoding.UTF8.GetString(result ?? []);
+        var resultStr = Encoding.UTF8.GetString(result ?? []);
         Assert.Equal(resultStr, testString);
     }
 }

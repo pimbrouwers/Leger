@@ -8,7 +8,7 @@ Leger is a lightweight library that aims to make working with [ADO.NET](https://
 ## Key Features
 
 - No reflection, no magic, no surprises.
-- Simple execution model, delivered as `IDbConnection`, `IDbCommand` and `IDbConnectionFactory` extension methods.
+- Simple and **uniform** execution model, delivered as `IDbConnection`, `IDbCommand`, `IDbTransaction` and [`IDbConnectionFactory`](#idbconnectionfactory) extension methods.
 - Safe value reading via `IDataRecord` and `IDataReader` [extensions](#idatareader-extension-methods).
 - [Enhanced](#exceptions) exception output.
 - [Async](#an-example-using-sqlite) versions of all data access methods.

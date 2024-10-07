@@ -10,8 +10,8 @@ public static class IDbTransactionExtensions
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams ?? [], commandType);
-        command.Execute();
+        using var command = transaction.CreateTransactionCommand();
+        command.Execute(commandText, dbParams, commandType);
     }
 
     public static async Task ExecuteAsync(
@@ -21,8 +21,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams ?? [], commandType);
-        await command.ExecuteAsync(cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        await command.ExecuteAsync(commandText, dbParams, commandType, cancellationToken);
     }
 
     public static void ExecuteMany(
@@ -31,8 +31,8 @@ public static class IDbTransactionExtensions
         IEnumerable<DbParams> paramList,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, [], commandType);
-        command.ExecuteMany(paramList);
+        using var command = transaction.CreateTransactionCommand();
+        command.ExecuteMany(commandText, paramList, commandType);
     }
 
     public static async Task ExecuteManyAsync(
@@ -42,8 +42,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, [], commandType);
-        await command.ExecuteManyAsync(paramList, cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        await command.ExecuteManyAsync(commandText, paramList, commandType, cancellationToken);
     }
 
     public static object? Scalar(
@@ -52,8 +52,8 @@ public static class IDbTransactionExtensions
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams ?? [], commandType);
-        return command.Scalar();
+        using var command = transaction.CreateTransactionCommand();
+        return command.Scalar(commandText, dbParams ?? [], commandType);
     }
 
     public static async Task<object?> ScalarAsync(
@@ -63,8 +63,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams ?? [], commandType);
-        return await command.ScalarAsync(cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        return await command.ScalarAsync(commandText, dbParams ?? [], commandType, cancellationToken);
     }
 
     public static IEnumerable<T> Query<T>(
@@ -72,18 +72,20 @@ public static class IDbTransactionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return command.Query(map);
+        using var command = transaction.CreateTransactionCommand();
+        return command.Query(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static IEnumerable<T> Query<T>(
         this IDbTransaction transaction,
         string commandText,
         Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text) =>
-        transaction.Query(commandText, [], map, commandType);
+        transaction.Query(commandText, [], map, commandBehavior, commandType);
 
     public static async Task<IEnumerable<T>> QueryAsync<T>(
         this IDbTransaction transaction,
@@ -94,8 +96,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return await command.QueryAsync(map, commandBehavior, cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static async Task<IEnumerable<T>> QueryAsync<T>(
@@ -112,18 +114,20 @@ public static class IDbTransactionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return command.QuerySingle(map);
+        using var command = transaction.CreateTransactionCommand();
+        return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static T? QuerySingle<T>(
         this IDbTransaction transaction,
         string commandText,
         Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text) =>
-        transaction.QuerySingle(commandText, [], map, commandType);
+        transaction.QuerySingle(commandText, [], map, commandBehavior, commandType);
 
     public static async Task<T?> QuerySingleAsync<T>(
         this IDbTransaction transaction,
@@ -134,8 +138,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return await command.QuerySingleAsync(map, commandBehavior, cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static async Task<T?> QuerySingleAsync<T>(
@@ -152,18 +156,20 @@ public static class IDbTransactionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return command.Read(map);
+        using var command = transaction.CreateTransactionCommand();
+        return command.Read(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static T Read<T>(
         this IDbTransaction transaction,
         string commandText,
         Func<IDataReader, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text) =>
-        transaction.Read(commandText, [], map, commandType);
+        transaction.Read(commandText, [], map, commandBehavior, commandType);
 
     public static async Task<T> ReadAsync<T>(
         this IDbTransaction transaction,
@@ -174,8 +180,8 @@ public static class IDbTransactionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = transaction.CreateTextCommand(commandText, dbParams, commandType);
-        return await command.ReadAsync(map, commandBehavior, cancellationToken);
+        using var command = transaction.CreateTransactionCommand();
+        return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static Task<T> ReadAsync<T>(
@@ -187,17 +193,12 @@ public static class IDbTransactionExtensions
         CancellationToken? cancellationToken = null) =>
         transaction.ReadAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
-    private static IDbCommand CreateTextCommand(
-        this IDbTransaction transaction,
-        string commandText,
-        DbParams dbParams,
-        CommandType commandType)
+    private static IDbCommand CreateTransactionCommand(
+        this IDbTransaction transaction)
     {
         var command =
-            transaction.Connection?.CreateTypedCommand(
-                commandText,
-                dbParams,
-                commandType) ?? throw new DatabaseTransactionException();
+            transaction.Connection?.CreateCommand() ??
+            throw new DatabaseTransactionException();
 
         command.Transaction = transaction;
         return command;

@@ -10,8 +10,8 @@ public static class IDbConnectionExtensions
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams ?? [], commandType);
-        command.Execute();
+        using var command = connection.CreateCommand();
+        command.Execute(commandText, dbParams, commandType);
     }
 
     public static async Task ExecuteAsync(
@@ -21,8 +21,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams ?? [], commandType);
-        await command.ExecuteAsync(cancellationToken);
+        using var command = connection.CreateCommand();
+        await command.ExecuteAsync(commandText, dbParams ?? [], commandType, cancellationToken);
     }
 
     public static void ExecuteMany(
@@ -31,8 +31,8 @@ public static class IDbConnectionExtensions
         IEnumerable<DbParams> paramList,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, [], commandType);
-        command.ExecuteMany(paramList);
+        using var command = connection.CreateCommand();
+        command.ExecuteMany(commandText, paramList, commandType);
     }
 
     public static async Task ExecuteManyAsync(
@@ -42,8 +42,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, [], commandType);
-        await command.ExecuteManyAsync(paramList, cancellationToken);
+        using var command = connection.CreateCommand();
+        await command.ExecuteManyAsync(commandText, paramList, commandType, cancellationToken);
     }
 
     public static object? Scalar(
@@ -52,8 +52,8 @@ public static class IDbConnectionExtensions
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams ?? [], commandType);
-        return command.Scalar();
+        using var command = connection.CreateCommand();
+        return command.Scalar(commandText, dbParams ?? [], commandType);
     }
 
     public static async Task<object?> ScalarAsync(
@@ -63,8 +63,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams ?? [], commandType);
-        return await command.ScalarAsync(cancellationToken);
+        using var command = connection.CreateCommand();
+        return await command.ScalarAsync(commandText, dbParams ?? [], commandType);
     }
 
     public static IEnumerable<T> Query<T>(
@@ -75,8 +75,8 @@ public static class IDbConnectionExtensions
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return command.Query(map, commandBehavior);
+        using var command = connection.CreateCommand();
+        return command.Query(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static IEnumerable<T> Query<T>(
@@ -96,8 +96,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return await command.QueryAsync(map, commandBehavior, cancellationToken);
+        using var command = connection.CreateCommand();
+        return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static async Task<IEnumerable<T>> QueryAsync<T>(
@@ -117,8 +117,8 @@ public static class IDbConnectionExtensions
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return command.QuerySingle(map, commandBehavior);
+        using var command = connection.CreateCommand();
+        return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static T? QuerySingle<T>(
@@ -138,8 +138,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return await command.QuerySingleAsync(map, commandBehavior, cancellationToken);
+        using var command = connection.CreateCommand();
+        return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static async Task<T?> QuerySingleAsync<T>(
@@ -159,8 +159,8 @@ public static class IDbConnectionExtensions
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return command.Read(map, commandBehavior);
+        using var command = connection.CreateCommand();
+        return command.Read(commandText, dbParams, map, commandBehavior, commandType);
     }
 
     public static T Read<T>(
@@ -180,8 +180,8 @@ public static class IDbConnectionExtensions
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
     {
-        using var command = connection.CreateTypedCommand(commandText, dbParams, commandType);
-        return await command.ReadAsync(map, commandBehavior, cancellationToken);
+        using var command = connection.CreateCommand();
+        return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
     }
 
     public static Task<T> ReadAsync<T>(
@@ -197,19 +197,6 @@ public static class IDbConnectionExtensions
     {
         connection.TryOpen();
         return connection.BeginTransaction();
-    }
-
-    internal static IDbCommand CreateTypedCommand(
-        this IDbConnection connection,
-        string commandText,
-        DbParams dbParams,
-        CommandType commandType)
-    {
-        var command = connection.CreateCommand();
-        command.CommandType = commandType;
-        command.CommandText = commandText;
-        command.SetDbParams(dbParams);
-        return command;
     }
 
     internal static void TryOpen(this IDbConnection connection)

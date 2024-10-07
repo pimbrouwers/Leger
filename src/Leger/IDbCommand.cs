@@ -6,8 +6,13 @@ using System.Data.Common;
 public static class IDbCommandExtensions
 {
     public static void Execute(
-        this IDbCommand command)
+        this IDbCommand command,
+        string commandText,
+        DbParams? dbParams = null,
+        CommandType commandType = CommandType.Text)
     {
+        command.Prepare(commandText, dbParams ?? [], commandType);
+
         command.Do(
             DatabaseErrorCode.CouldNotExecuteNonQuery,
             cmd => cmd.ExecuteNonQuery());
@@ -15,110 +20,238 @@ public static class IDbCommandExtensions
 
     public static Task ExecuteAsync(
         this IDbCommand command,
-        CancellationToken? cancellationToken = null) =>
-        command.DoAsync(
+        string commandText,
+        DbParams? dbParams = null,
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+    {
+        command.Prepare(commandText, dbParams ?? [], commandType);
+
+        return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteNonQuery,
             cmd => cmd.ExecuteNonQueryAsync(cancellationToken ?? CancellationToken.None));
+    }
 
     public static void ExecuteMany(
         this IDbCommand command,
-        IEnumerable<DbParams> paramList) =>
-      command.DoMany(paramList, command => command.ExecuteNonQuery());
+        string commandText,
+        IEnumerable<DbParams> paramList,
+        CommandType commandType = CommandType.Text)
+    {
+        command.Prepare(commandText, [], commandType);
+        command.DoMany(paramList, command => command.ExecuteNonQuery());
+    }
 
     public static async Task ExecuteManyAsync(
         this IDbCommand command,
+        string commandText,
         IEnumerable<DbParams> paramList,
-        CancellationToken? cancellationToken = null) =>
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+    {
+        command.Prepare(commandText, [], commandType);
         await command.DoManyAsync(paramList, command =>
             command.ExecuteNonQueryAsync(cancellationToken ?? CancellationToken.None));
+    }
 
     public static object? Scalar(
-        this IDbCommand command) =>
-        command.Do(
+        this IDbCommand command,
+        string commandText,
+        DbParams? dbParams = null,
+        CommandType commandType = CommandType.Text)
+    {
+        command.Prepare(commandText, dbParams ?? [], commandType);
+
+        return command.Do(
             DatabaseErrorCode.CouldNotExecuteScalar,
             cmd => cmd.ExecuteScalar());
+    }
 
     public static Task<object?> ScalarAsync(
         this IDbCommand command,
-        CancellationToken? cancellationToken = null) =>
-        command.DoAsync(
+        string commandText,
+        DbParams? dbParams = null,
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+    {
+        command.Prepare(commandText, dbParams ?? [], commandType);
+        return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteScalar,
             cmd => cmd.ExecuteScalarAsync(cancellationToken ?? CancellationToken.None));
+    }
 
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
-        Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess) =>
-        command.Do(
+        string commandText,
+        DbParams dbParams,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text)
+    {
+        command.Prepare(commandText, dbParams, commandType);
+        return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
             {
                 using var rd = command.TryExecuteReader(commandBehavior);
                 return rd.Map(map);
             });
+    }
+
+    public static IEnumerable<T> Query<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text) =>
+        command.Query(commandText, [], map, commandBehavior, commandType);
 
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
-        Func<IDataReader, T> map,
+        string commandText,
+        DbParams dbParams,
+        Func<IDataRecord, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+        {
+            command.Prepare(commandText, dbParams, commandType);
+            return command.DoAsync(
+                DatabaseErrorCode.CouldNotExecuteReader,
+                async cmd =>
+                {
+                    using var rd = await cmd.TryExecuteReaderAsync(commandBehavior, cancellationToken);
+                    return await rd.MapAsync(map);
+                });
+        }
+
+    public static Task<IEnumerable<T>> QueryAsync<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null) =>
-        command.DoAsync(
-            DatabaseErrorCode.CouldNotExecuteReader,
-            async cmd =>
-            {
-                using var rd = await cmd.TryExecuteReaderAsync(commandBehavior, cancellationToken);
-                return await rd.MapAsync(map);
-            });
+        command.QueryAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
     public static T? QuerySingle<T>(
         this IDbCommand command,
-        Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess) =>
-        command.Do(
+        string commandText,
+        DbParams dbParams,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text)
+    {
+        command.Prepare(commandText, dbParams, commandType);
+        return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
             {
                 using var rd = cmd.TryExecuteReader(commandBehavior);
                 return rd.MapFirst(map);
             });
+    }
+
+    public static T? QuerySingle<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text) =>
+        command.QuerySingle(commandText, [], map, commandBehavior, commandType);
 
     public static Task<T?> QuerySingleAsync<T>(
         this IDbCommand command,
-        Func<IDataReader, T> map,
+        string commandText,
+        DbParams dbParams,
+        Func<IDataRecord, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CancellationToken? cancellationToken = null) =>
-        command.DoAsync(
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+    {
+        command.Prepare(commandText, dbParams, commandType);
+        return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteReader,
             async cmd =>
             {
                 using var rd = await cmd.TryExecuteReaderAsync(commandBehavior, cancellationToken);
                 return await rd.MapFirstAsync(map, cancellationToken);
             });
+    }
+
+    public static Task<T?> QuerySingleAsync<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataRecord, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null) =>
+        command.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
     public static T Read<T>(
         this IDbCommand command,
-        Func<IDataReader, T> read,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess) =>
-        command.Do(
+        string commandText,
+        DbParams dbParams,
+        Func<IDataReader, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text)
+    {
+        command.Prepare(commandText, dbParams, commandType);
+        return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
             {
                 using var rd = cmd.TryExecuteReader(commandBehavior);
-                return read(rd);
+                return map(rd);
             });
+    }
+
+    public static T Read<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataReader, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text) =>
+        command.Read(commandText, [], map, commandBehavior, commandType);
 
     public static Task<T> ReadAsync<T>(
         this IDbCommand command,
-        Func<IDataReader, T> read,
+        string commandText,
+        DbParams dbParams,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CancellationToken? cancellationToken = null) =>
-        command.DoAsync(
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null)
+    {
+        command.Prepare(commandText, dbParams, commandType);
+        return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteReader,
             async cmd =>
             {
                 using var rd = await cmd.TryExecuteReaderAsync(commandBehavior, cancellationToken);
-                return read(rd);
+                return map(rd);
             });
+    }
+
+    public static Task<T> ReadAsync<T>(
+        this IDbCommand command,
+        string commandText,
+        Func<IDataReader, T> map,
+        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandType commandType = CommandType.Text,
+        CancellationToken? cancellationToken = null) =>
+        command.ReadAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+
+    internal static void Prepare(
+        this IDbCommand command,
+        string commandText,
+        DbParams dbParams,
+        CommandType commandType)
+    {
+        command.CommandType = commandType;
+        command.CommandText = commandText;
+        command.SetDbParams(dbParams);
+    }
 
     internal static void SetDbParams(this IDbCommand command, DbParams param)
     {
