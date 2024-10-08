@@ -41,8 +41,7 @@ using System;
 using System.Data.Sqlite;
 using Leger;
 
-const connectionString = "{your connection string}";
-using var connection = new SqliteConnection(connectionString);
+using var connection = new SqliteConnection("{your connection string}");
 
 var books = connection.Query("""
     SELECT name FROM book WHERE author_id = @author_id"
@@ -61,20 +60,20 @@ foreach(var book in books)
 For this example, assume we have an `IDbConnection` named `connection`:
 
 ```csharp
-using var connection = new SqliteConnection("Data Source=hello.db");
+using var connection = new SqliteConnection("Data Source=author.db");
 ```
 
-Consider the following domain model:
+With the following database schema:
 
-```csharp
-
-/* schema
+```sql
 CREATE TABLE author (
     author_id INTEGER PRIMARY KEY,
-    full_name TEXT
-);
-*/
+    full_name TEXT);
+```
 
+And domain model:
+
+```csharp
 public record Author(
     int AuthorId,
     string FullName);
