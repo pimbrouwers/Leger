@@ -1,4 +1,4 @@
-# Leger - Classy C# data access that's as light as air.
+# Leger
 
 [![NuGet Version](https://img.shields.io/nuget/v/Leger.svg)](https://www.nuget.org/packages/Leger)
 [![build](https://github.com/pimbrouwers/Leger/actions/workflows/build.yml/badge.svg)](https://github.com/pimbrouwers/Leger/actions/workflows/build.yml)
