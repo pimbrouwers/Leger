@@ -102,7 +102,7 @@ public static class IDbCommandExtensions
     }
 
     /// <summary>
-    /// Executes a command and returns a scalar of type <typeparamref name="T"/>.
+    /// Executes a command and returns an enumerable of type <typeparamref name="T"/>.
     /// </summary>
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
@@ -123,7 +123,7 @@ public static class IDbCommandExtensions
     }
 
     /// <summary>
-    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// Executes a command and returns an enumerable of type <typeparamref name="T"/>.
     /// </summary>
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
@@ -134,7 +134,7 @@ public static class IDbCommandExtensions
         command.Query(commandText, [], map, commandBehavior, commandType);
 
     /// <summary>
-    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// Executes a command and returns an enumerable of type <typeparamref name="T"/> asynchronously.
     /// </summary>
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
@@ -156,7 +156,7 @@ public static class IDbCommandExtensions
         }
 
     /// <summary>
-    /// Executes a command and returns a scalar of type <typeparamref name="T"/> asynchronously.
+    /// Executes a command and returns an enumerable of type <typeparamref name="T"/> asynchronously.
     /// </summary>
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
@@ -234,7 +234,8 @@ public static class IDbCommandExtensions
         command.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
 
     /// <summary>
-    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// Executes a command, applies the <paramref name="map"/> function to the
+    /// <see cref="IDataReader"/>, and returns the result of type <typeparamref name="T"/>.
     /// </summary>
     public static T Read<T>(
         this IDbCommand command,
@@ -255,7 +256,8 @@ public static class IDbCommandExtensions
     }
 
     /// <summary>
-    /// Executes a command and returns a single result of type <typeparamref name="T"/>.
+    /// Executes a command, applies the <paramref name="map"/> function to the
+    /// <see cref="IDataReader"/>, and returns the result of type <typeparamref name="T"/>.
     /// </summary>
     public static T Read<T>(
         this IDbCommand command,
@@ -266,7 +268,9 @@ public static class IDbCommandExtensions
         command.Read(commandText, [], map, commandBehavior, commandType);
 
     /// <summary>
-    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// Executes a command, applies the <paramref name="map"/> function to the
+    /// <see cref="IDataReader"/>, and returns the result of type
+    /// <typeparamref name="T"/> asynchronously.
     /// </summary>
     public static Task<T> ReadAsync<T>(
         this IDbCommand command,
@@ -288,7 +292,9 @@ public static class IDbCommandExtensions
     }
 
     /// <summary>
-    /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
+    /// Executes a command, applies the <paramref name="map"/> function to the
+    /// <see cref="IDataReader"/>, and returns the result of type
+    /// <typeparamref name="T"/> asynchronously.
     /// </summary>
     public static Task<T> ReadAsync<T>(
         this IDbCommand command,
