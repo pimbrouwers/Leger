@@ -104,7 +104,7 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -118,7 +118,7 @@ public static class IDbConnectionFactoryExtensions
     public static IEnumerable<T> Query<T>(
         this IDbConnectionFactory connectionFactory,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -133,7 +133,7 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
@@ -148,7 +148,7 @@ public static class IDbConnectionFactoryExtensions
     public static async Task<IEnumerable<T>> QueryAsync<T>(
         this IDbConnectionFactory connectionFactory,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
@@ -164,7 +164,7 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -178,7 +178,7 @@ public static class IDbConnectionFactoryExtensions
     public static T? QuerySingle<T>(
         this IDbConnectionFactory connectionFactory,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -193,7 +193,7 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
@@ -208,7 +208,7 @@ public static class IDbConnectionFactoryExtensions
     public static async Task<T?> QuerySingleAsync<T>(
         this IDbConnectionFactory connectionFactory,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)

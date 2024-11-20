@@ -108,7 +108,7 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -128,7 +128,7 @@ public static class IDbCommandExtensions
     public static IEnumerable<T> Query<T>(
         this IDbCommand command,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text) =>
         command.Query(commandText, [], map, commandBehavior, commandType);
@@ -140,7 +140,7 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
@@ -161,7 +161,7 @@ public static class IDbCommandExtensions
     public static Task<IEnumerable<T>> QueryAsync<T>(
         this IDbCommand command,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null) =>
@@ -174,7 +174,7 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text)
     {
@@ -194,7 +194,7 @@ public static class IDbCommandExtensions
     public static T? QuerySingle<T>(
         this IDbCommand command,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text) =>
         command.QuerySingle(commandText, [], map, commandBehavior, commandType);
@@ -206,7 +206,7 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams dbParams,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null)
@@ -227,7 +227,7 @@ public static class IDbCommandExtensions
     public static Task<T?> QuerySingleAsync<T>(
         this IDbCommand command,
         string commandText,
-        Func<IDataRecord, T> map,
+        Func<IDataReader, T> map,
         CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
         CommandType commandType = CommandType.Text,
         CancellationToken? cancellationToken = null) =>
