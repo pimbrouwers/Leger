@@ -85,7 +85,7 @@ public static class IDbConnectionExtensions
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        return await command.ScalarAsync(commandText, dbParams ?? [], commandType);
+        return await command.ScalarAsync(commandText, dbParams ?? [], commandType, cancellationToken);
     }
 
     /// <summary>

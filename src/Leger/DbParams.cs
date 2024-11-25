@@ -92,7 +92,7 @@ public sealed class DbTypeParam(DbType dbType, object? value = null)
         new(DbType.Currency, v);
 
     /// <summary> Gets the value as a date. </summary>
-    public static DbTypeParam Date(DateTime v) =>
+    public static DbTypeParam Date(DateOnly v) =>
         new(DbType.Date, v);
 
     /// <summary> Gets the value as a date time. </summary>

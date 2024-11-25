@@ -22,6 +22,7 @@ public class IDbDataRecordTests(TestDb testDb)
                   , @p_GetFloat AS p_GetFloat
                   , @p_GetGuid AS p_GetGuid
                   , @p_GetDateTime AS p_GetDateTime
+                  , @p_GetDateOnly AS p_GetDateOnly
                   , @p_GetBytes AS p_GetBytes
                   , @p_GetNullableBoolean AS p_GetNullableBoolean
                   , @p_GetNullableByte AS p_GetNullableByte
@@ -33,6 +34,7 @@ public class IDbDataRecordTests(TestDb testDb)
                   , @p_GetNullableFloat AS p_GetNullableFloat
                   , @p_GetNullableGuid AS p_GetNullableGuid
                   , @p_GetNullableDateTime AS p_GetNullableDateTime
+                  , @p_GetNullableDateOnly AS p_GetNullableDateOnly
                   , @p_GetNullableBytes AS p_GetNullableBytes
                   , @p_GetString AS p_GetNullableString_value
                   , @p_GetChar AS p_GetNullableChar_value
@@ -46,10 +48,13 @@ public class IDbDataRecordTests(TestDb testDb)
                   , @p_GetFloat AS p_GetNullableFloat_value
                   , @p_GetGuid AS p_GetNullableGuid_value
                   , @p_GetDateTime AS p_GetNullableDateTime_value
+                  , @p_GetDateOnly AS p_GetNullableDateOnly_value
                   , @p_GetBytes AS p_GetNullableBytes_value
             ";
 
         var now = DateTime.Now;
+        var nowDateOnly = DateOnly.FromDateTime(now);
+
         var param = new DbParams(){
                 { "p_GetString", "Nhlpa.Sql" },
                 { "p_GetChar", 's' },
@@ -63,6 +68,7 @@ public class IDbDataRecordTests(TestDb testDb)
                 { "p_GetFloat", DbTypeParam.Float(1.0F) },
                 { "p_GetGuid", DbTypeParam.Guid(Guid.Empty) },
                 { "p_GetDateTime", now },
+                { "p_GetDateOnly", nowDateOnly },
                 { "p_GetBytes", Array.Empty<byte>() },
                 { "p_GetNullableBoolean", DbTypeParam.NullBoolean },
                 { "p_GetNullableByte", DbTypeParam.NullByte },
@@ -74,6 +80,7 @@ public class IDbDataRecordTests(TestDb testDb)
                 { "p_GetNullableFloat", DbTypeParam.NullFloat },
                 { "p_GetNullableGuid", DbTypeParam.NullGuid },
                 { "p_GetNullableDateTime", DbTypeParam.NullDateTime },
+                { "p_GetNullableDateOnly", DbTypeParam.NullDate },
                 { "p_GetNullableBytes", DbTypeParam.NullBytes }
             };
 
@@ -92,6 +99,7 @@ public class IDbDataRecordTests(TestDb testDb)
             Assert.Equal(1.0, rd.ReadFloat("p_GetFloat"));
             Assert.Equal(Guid.Empty, rd.ReadGuid("p_GetGuid"));
             Assert.Equal(now, rd.ReadDateTime("p_GetDateTime"));
+            Assert.Equal(nowDateOnly, rd.ReadDateOnly("p_GetDateOnly"));
 
             Assert.Null(rd.ReadNullableBoolean("p_GetNullableBoolean"));
             Assert.Null(rd.ReadNullableByte("p_GetNullableByte"));
@@ -103,6 +111,7 @@ public class IDbDataRecordTests(TestDb testDb)
             Assert.Null(rd.ReadNullableFloat("p_GetNullableFloat"));
             Assert.Null(rd.ReadNullableGuid("p_GetNullableGuid"));
             Assert.Null(rd.ReadNullableDateTime("p_GetNullableDateTime"));
+            Assert.Null(rd.ReadNullableDateOnly("p_GetNullableDateOnly"));
 
             Assert.True(rd.ReadNullableBoolean("p_GetNullableBoolean_value"));
             Assert.Equal<byte?>(1, rd.ReadNullableByte("p_GetNullableByte_value"));
@@ -113,6 +122,7 @@ public class IDbDataRecordTests(TestDb testDb)
             Assert.Equal(1.0, rd.ReadNullableDouble("p_GetNullableDouble_value"));
             Assert.Equal(Guid.Empty, rd.ReadNullableGuid("p_GetNullableGuid_value"));
             Assert.Equal(now, rd.ReadNullableDateTime("p_GetNullableDateTime_value"));
+            Assert.Equal(nowDateOnly, rd.ReadNullableDateOnly("p_GetNullableDateOnly_value"));
 
             return 1;
         });

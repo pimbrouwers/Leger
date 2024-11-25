@@ -71,6 +71,10 @@ public static class IDataRecordExtensions
     public static DateTime ReadDateTime(this IDataRecord rd, string field) =>
         rd.ReadValueByField(field, rd.GetDateTime);
 
+    /// <summary> Reads a date from the <see cref="IDataRecord"/>. </summary>
+    public static DateOnly ReadDateOnly(this IDataRecord rd, string field) =>
+        rd.ReadValueByField(field, i => DateOnly.FromDateTime(rd.GetDateTime(i)));
+
     /// <summary> Reads a byte array from the <see cref="IDataRecord"/>. </summary>
     public static byte[] ReadBytes(this IDataRecord rd, string field) =>
         rd.ReadValueByField(field, rd.StreamBytes) ?? [];
@@ -138,6 +142,10 @@ public static class IDataRecordExtensions
     /// <summary> Reads a nullable date time from the <see cref="IDataRecord"/>. </summary>
     public static DateTime? ReadNullableDateTime(this IDataRecord rd, string field) =>
         rd.ReadNullableValueByField(field, rd.GetDateTime);
+
+    /// <summary> Reads a nullable date from the <see cref="IDataRecord"/>. </summary>
+    public static DateOnly? ReadNullableDateOnly(this IDataRecord rd, string field) =>
+        rd.ReadNullableValueByField(field, i => DateOnly.FromDateTime(rd.GetDateTime(i)));
 
     private static T? ReadValueByField<T>(this IDataRecord rd, string fieldName, Func<int, T?> map)
     {
