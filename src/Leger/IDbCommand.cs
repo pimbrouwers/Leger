@@ -15,9 +15,10 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, dbParams ?? [], commandType);
+        command.Prepare(commandText, dbParams ?? [], commandType, commandTimeout);
 
         command.Do(
             DatabaseErrorCode.CouldNotExecuteNonQuery,
@@ -32,9 +33,10 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
-        command.Prepare(commandText, dbParams ?? [], commandType);
+        command.Prepare(commandText, dbParams ?? [], commandType, commandTimeout);
 
         return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteNonQuery,
@@ -48,9 +50,10 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         IEnumerable<DbParams> paramList,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, [], commandType);
+        command.Prepare(commandText, [], commandType, commandTimeout);
         command.DoMany(paramList, command => command.ExecuteNonQuery());
     }
 
@@ -62,9 +65,10 @@ public static class IDbCommandExtensions
         string commandText,
         IEnumerable<DbParams> paramList,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
-        command.Prepare(commandText, [], commandType);
+        command.Prepare(commandText, [], commandType, commandTimeout);
         await command.DoManyAsync(paramList, command =>
             command.ExecuteNonQueryAsync(cancellationToken ?? CancellationToken.None));
     }
@@ -76,9 +80,10 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, dbParams ?? [], commandType);
+        command.Prepare(commandText, dbParams ?? [], commandType, commandTimeout);
 
         return command.Do(
             DatabaseErrorCode.CouldNotExecuteScalar,
@@ -93,9 +98,10 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
-        command.Prepare(commandText, dbParams ?? [], commandType);
+        command.Prepare(commandText, dbParams ?? [], commandType, commandTimeout);
         return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteScalar,
             cmd => cmd.ExecuteScalarAsync(cancellationToken ?? CancellationToken.None));
@@ -109,10 +115,11 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, dbParams, commandType);
+        command.Prepare(commandText, dbParams, commandType, commandTimeout);
         return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
@@ -129,8 +136,9 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
         command.Query(commandText, [], map, commandBehavior, commandType);
 
     /// <summary>
@@ -141,11 +149,12 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
         {
-            command.Prepare(commandText, dbParams, commandType);
+            command.Prepare(commandText, dbParams, commandType, commandTimeout);
             return command.DoAsync(
                 DatabaseErrorCode.CouldNotExecuteReader,
                 async cmd =>
@@ -162,10 +171,11 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        command.QueryAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        command.QueryAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     /// <summary>
     /// Executes a command and returns a single result of type <typeparamref name="T"/>.
@@ -175,10 +185,11 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, dbParams, commandType);
+        command.Prepare(commandText, dbParams, commandType, commandTimeout);
         return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
@@ -195,8 +206,9 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
         command.QuerySingle(commandText, [], map, commandBehavior, commandType);
 
     /// <summary>
@@ -207,11 +219,12 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
-        command.Prepare(commandText, dbParams, commandType);
+        command.Prepare(commandText, dbParams, commandType, commandTimeout);
         return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteReader,
             async cmd =>
@@ -228,10 +241,11 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        command.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        command.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     /// <summary>
     /// Executes a command, applies the <paramref name="map"/> function to the
@@ -242,10 +256,11 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
-        command.Prepare(commandText, dbParams, commandType);
+        command.Prepare(commandText, dbParams, commandType, commandTimeout);
         return command.Do(
             DatabaseErrorCode.CouldNotExecuteReader,
             cmd =>
@@ -263,8 +278,9 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
         command.Read(commandText, [], map, commandBehavior, commandType);
 
     /// <summary>
@@ -277,11 +293,12 @@ public static class IDbCommandExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
-        command.Prepare(commandText, dbParams, commandType);
+        command.Prepare(commandText, dbParams, commandType, commandTimeout);
         return command.DoAsync(
             DatabaseErrorCode.CouldNotExecuteReader,
             async cmd =>
@@ -300,20 +317,23 @@ public static class IDbCommandExtensions
         this IDbCommand command,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        command.ReadAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        command.ReadAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     internal static void Prepare(
         this IDbCommand command,
         string commandText,
         DbParams dbParams,
-        CommandType commandType)
+        CommandType commandType,
+        int commandTimeout)
     {
         command.CommandType = commandType;
         command.CommandText = commandText;
         command.SetDbParams(dbParams);
+        command.CommandTimeout = commandTimeout;
     }
 
     internal static void SetDbParams(this IDbCommand command, DbParams param)

@@ -14,10 +14,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        command.Execute(commandText, dbParams, commandType);
+        command.Execute(commandText, dbParams, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -28,10 +29,11 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        await command.ExecuteAsync(commandText, dbParams ?? [], commandType, cancellationToken);
+        await command.ExecuteAsync(commandText, dbParams ?? [], commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -41,10 +43,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         IEnumerable<DbParams> paramList,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        command.ExecuteMany(commandText, paramList, commandType);
+        command.ExecuteMany(commandText, paramList, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -55,10 +58,11 @@ public static class IDbConnectionExtensions
         string commandText,
         IEnumerable<DbParams> paramList,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        await command.ExecuteManyAsync(commandText, paramList, commandType, cancellationToken);
+        await command.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -68,10 +72,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        return command.Scalar(commandText, dbParams ?? [], commandType);
+        return command.Scalar(commandText, dbParams ?? [], commandType, commandTimeout);
     }
 
     /// <summary>
@@ -82,10 +87,11 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        return await command.ScalarAsync(commandText, dbParams ?? [], commandType, cancellationToken);
+        return await command.ScalarAsync(commandText, dbParams ?? [], commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -96,11 +102,12 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        return command.Query(commandText, dbParams, map, commandBehavior, commandType);
+        return command.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -110,9 +117,10 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
-        connection.Query(commandText, [], map, commandBehavior, commandType);
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
+        connection.Query(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command and returns an enumerable of type <typeparamref name="T"/> asynchronously.
@@ -122,12 +130,13 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -137,10 +146,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        await connection.QueryAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        await connection.QueryAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     /// <summary>
     /// Executes a command and returns a single result of type <typeparamref name="T"/>.
@@ -150,11 +160,12 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType);
+        return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -164,9 +175,10 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
-        connection.QuerySingle(commandText, [], map, commandBehavior, commandType);
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
+        connection.QuerySingle(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
@@ -176,12 +188,13 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -191,10 +204,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        await connection.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        await connection.QuerySingleAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     /// <summary>
     /// Executes a command, applies the <paramref name="map"/> function to the
@@ -205,11 +219,12 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var command = connection.CreateCommand();
-        return command.Read(commandText, dbParams, map, commandBehavior, commandType);
+        return command.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -221,9 +236,10 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
-        connection.Read(commandText, [], map, commandBehavior, commandType);
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
+        connection.Read(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command, applies the <paramref name="map"/> function to the
@@ -235,12 +251,13 @@ public static class IDbConnectionExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var command = connection.CreateCommand();
-        return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -252,10 +269,11 @@ public static class IDbConnectionExtensions
         this IDbConnection connection,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        connection.ReadAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        connection.ReadAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
     /// <summary>
     /// Attempts to safely open the <see cref="IDbConnection"/> and begin a

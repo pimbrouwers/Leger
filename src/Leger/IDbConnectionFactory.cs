@@ -23,10 +23,11 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        connection.Execute(commandText, dbParams, commandType);
+        connection.Execute(commandText, dbParams, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -37,10 +38,11 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        await connection.ExecuteAsync(commandText, dbParams, commandType, cancellationToken);
+        await connection.ExecuteAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -50,10 +52,11 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         IEnumerable<DbParams> paramList,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        connection.ExecuteMany(commandText, paramList, commandType);
+        connection.ExecuteMany(commandText, paramList, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -64,10 +67,11 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         IEnumerable<DbParams> paramList,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        await connection.ExecuteManyAsync(commandText, paramList, commandType, cancellationToken);
+        await connection.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -77,10 +81,11 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         DbParams? dbParams = null,
-        CommandType commandType = CommandType.Text)
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.Scalar(commandText, dbParams, commandType);
+        return connection.Scalar(commandText, dbParams, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -91,10 +96,11 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams? dbParams = null,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.ScalarAsync(commandText, dbParams, commandType, cancellationToken);
+        return await connection.ScalarAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -105,11 +111,12 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.Query(commandText, dbParams, map, commandBehavior, commandType);
+        return connection.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -119,11 +126,12 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.Query(commandText, map, commandBehavior, commandType);
+        return connection.Query(commandText, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -134,12 +142,13 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await connection.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -149,12 +158,13 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.QueryAsync(commandText, map, commandBehavior, commandType, cancellationToken);
+        return await connection.QueryAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -165,11 +175,12 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.QuerySingle(commandText, dbParams, map, commandBehavior, commandType);
+        return connection.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -179,11 +190,12 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.QuerySingle(commandText, map, commandBehavior, commandType);
+        return connection.QuerySingle(commandText, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -194,12 +206,13 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await connection.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -209,12 +222,13 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.QuerySingleAsync(commandText, map, commandBehavior, commandType, cancellationToken);
+        return await connection.QuerySingleAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -226,11 +240,12 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text)
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30)
     {
         using var connection = connectionFactory.CreateConnection();
-        return connection.Read(commandText, dbParams, map, commandBehavior, commandType);
+        return connection.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
     }
 
     /// <summary>
@@ -241,9 +256,10 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
-        CommandType commandType = CommandType.Text) =>
-        connectionFactory.Read(commandText, [], map, commandBehavior, commandType);
+        CommandBehavior commandBehavior = CommandBehavior.Default,
+        CommandType commandType = CommandType.Text,
+        int commandTimeout = 30) =>
+        connectionFactory.Read(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command, applies the <paramref name="map"/> function to the
@@ -255,12 +271,13 @@ public static class IDbConnectionFactoryExtensions
         string commandText,
         DbParams dbParams,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null)
     {
         using var connection = connectionFactory.CreateConnection();
-        return await connection.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, cancellationToken);
+        return await connection.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
     }
 
     /// <summary>
@@ -272,8 +289,9 @@ public static class IDbConnectionFactoryExtensions
         this IDbConnectionFactory connectionFactory,
         string commandText,
         Func<IDataReader, T> map,
-        CommandBehavior commandBehavior = CommandBehavior.SequentialAccess,
+        CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
+        int commandTimeout = 30,
         CancellationToken? cancellationToken = null) =>
-        connectionFactory.ReadAsync(commandText, [], map, commandBehavior, commandType, cancellationToken);
+        connectionFactory.ReadAsync(commandText, [], map, commandBehavior, commandType, commandTimeout, cancellationToken);
 }
