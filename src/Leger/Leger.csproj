@@ -7,7 +7,7 @@
     <!-- General info -->
     <Description>Classy C# data access that's as light as air.</Description>
     <Copyright>Copyright 2024 Pim Brouwers</Copyright>
-    <Authors>Pim Brouwers</Authors>
+    <Authors>East City Software, Pim Brouwers</Authors>
     <NeutralLanguage>en-CA</NeutralLanguage>
 
     <!-- Build config -->
@@ -22,12 +22,12 @@
     <!-- NuGet config -->
     <PackageId>Leger</PackageId>
     <PackageTags>database;sql;ado;adonet;data access;repository</PackageTags>
-    <PackageProjectUrl>https://github.com/pimbrouwers/Leger</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/eastcitysoftware/leger</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/pimbrouwers/Leger</RepositoryUrl>
+    <RepositoryUrl>https://github.com/eastcitysoftware/leger</RepositoryUrl>
 
     <!-- SourceLink settings -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

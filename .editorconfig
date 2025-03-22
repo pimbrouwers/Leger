@@ -122,6 +122,9 @@ csharp_style_inlined_variable_declaration = true:suggestion
 # Namespaces
 csharp_style_namespace_declarations = file_scoped:warning
 
+dotnet_diagnostic.IDE0059.severity = error
+dotnet_diagnostic.IDE0060.severity = error
+
 ###############################
 # C# Formatting Rules         #
 ###############################
@@ -279,6 +282,7 @@ dotnet_diagnostic.CA2020.severity = error
 dotnet_diagnostic.CA2021.severity = error
 
 # Performance
+dotnet_diagnostic.CA1801.severity = error
 dotnet_diagnostic.CA1802.severity = error
 dotnet_diagnostic.CA1805.severity = error
 dotnet_diagnostic.CA1806.severity = error
@@ -317,7 +321,6 @@ dotnet_diagnostic.CA1845.severity = error
 dotnet_diagnostic.CA1846.severity = error
 dotnet_diagnostic.CA1847.severity = error
 dotnet_diagnostic.CA1848.severity = error
-#dotnet_diagnostic.CA1849.severity = error
 dotnet_diagnostic.CA1850.severity = error
 dotnet_diagnostic.CA1851.severity = error
 dotnet_diagnostic.CA1852.severity = error

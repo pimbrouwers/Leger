@@ -139,7 +139,7 @@ public static class IDbCommandExtensions
         CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
         int commandTimeout = 30) =>
-        command.Query(commandText, [], map, commandBehavior, commandType);
+        command.Query(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command and returns an enumerable of type <typeparamref name="T"/> asynchronously.
@@ -209,7 +209,7 @@ public static class IDbCommandExtensions
         CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
         int commandTimeout = 30) =>
-        command.QuerySingle(commandText, [], map, commandBehavior, commandType);
+        command.QuerySingle(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command and returns a single result of type <typeparamref name="T"/> asynchronously.
@@ -281,7 +281,7 @@ public static class IDbCommandExtensions
         CommandBehavior commandBehavior = CommandBehavior.Default,
         CommandType commandType = CommandType.Text,
         int commandTimeout = 30) =>
-        command.Read(commandText, [], map, commandBehavior, commandType);
+        command.Read(commandText, [], map, commandBehavior, commandType, commandTimeout);
 
     /// <summary>
     /// Executes a command, applies the <paramref name="map"/> function to the
