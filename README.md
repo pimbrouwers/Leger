@@ -80,7 +80,7 @@ public record Author(
 
 public static class AuthorReader
 {
-    public static Author Map(IDataReader rd) =>
+    public static Author Map(IDataRecord rd) =>
         new(AuthorId = rd.ReadInt32("author_id"),
             FullName = rd.ReadString("full_name"));
 }
