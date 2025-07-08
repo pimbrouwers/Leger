@@ -5,29 +5,30 @@
     <Version>1.0.1</Version>
 
     <!-- General info -->
-    <Description>Classy C# data access that's as light as air.</Description>
+    <Description>C# data access with no reflection, no magic, no surprises. Light as air.</Description>
     <Copyright>Copyright 2024 Pim Brouwers</Copyright>
     <Authors>East City Software, Pim Brouwers</Authors>
     <NeutralLanguage>en-CA</NeutralLanguage>
 
     <!-- Build config -->
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
     <DebugType>embedded</DebugType>
     <OutputType>Library</OutputType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
+    <!-- AOT for net8.0 and greater -->
+    <IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net9.0'">true</IsAotCompatible>
+
     <!-- NuGet config -->
     <PackageId>Leger</PackageId>
     <PackageTags>database;sql;ado;adonet;data access;repository</PackageTags>
-    <PackageProjectUrl>https://github.com/eastcitysoftware/leger</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/pimbrouwers/leger</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/eastcitysoftware/leger</RepositoryUrl>
+    <RepositoryUrl>https://github.com/pimbrouwers/leger</RepositoryUrl>
 
     <!-- SourceLink settings -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

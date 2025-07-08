@@ -1,7 +1,12 @@
 # Léger
 
 [![NuGet Version](https://img.shields.io/nuget/v/Leger.svg)](https://www.nuget.org/packages/Leger)
-[![build](https://github.com/eastcitysoftware/leger/actions/workflows/build.yml/badge.svg)](https://github.com/eastcitysoftware/leger/actions/workflows/build.yml)
+[![build](https://github.com/pimbrouwers/leger/actions/workflows/build.yml/badge.svg)](https://github.com/pimbrouwers/leger/actions/workflows/build.yml)
+[![license](https://img.shields.io/github/license/pimbrouwers/Leger.svg)](https://github.com/pimbrouwers/Leger/blob/master/LICENSE)
+![aot](https://img.shields.io/badge/aot-compatible-green.svg)
+![net8.0](https://img.shields.io/badge/net-8.0-blue.svg)
+![net6.0](https://img.shields.io/badge/net-6.0-blue.svg)
+![netstandard2.0](https://img.shields.io/badge/netstandard-2.0-blue.svg)
 
 Léger is a library that aims to make working with [ADO.NET](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-overview) from C# *a lot* simpler. Functionality is delivered through an API that bears a resemblance to [Dapper](https://github.com/DapperLib/Dapper) with a focus on manual mapping and a few extra goodies built-in.
 
@@ -263,14 +268,14 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 
 Thank you for considering contributing to Leger, and to those who have already contributed! We appreciate (and actively resolve) PRs of all shapes and sizes.
 
-We kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/eastcitysoftware/leger/issues) or open a [discussion](https://github.com/eastcitysoftware/leger/discussions).
+We kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
 
-If functionality is added to the API, or changed, please kindly update the relevant [document](https://github.com/eastcitysoftware/leger/tree/master/docs). Unit tests must also be added and/or updated before a pull request can be successfully merged.
+If functionality is added to the API, or changed, please kindly update the relevant [document](https://github.com/pimbrouwers/leger/tree/master/docs). Unit tests must also be added and/or updated before a pull request can be successfully merged.
 
 Only pull requests which pass all build checks and comply with the general coding guidelines can be approved.
 
-If you have any further questions, submit an [issue](https://github.com/eastcitysoftware/leger/issues) or open a [discussion](https://github.com/eastcitysoftware/leger/discussions).
+If you have any further questions, submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
 
 ## License
 
-Licensed under [Apache License 2.0](https://github.com/eastcitysoftware/leger/blob/master/LICENSE).
+Licensed under [MIT](https://github.com/pimbrouwers/leger/blob/master/LICENSE).
