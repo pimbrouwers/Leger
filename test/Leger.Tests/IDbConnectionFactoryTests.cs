@@ -38,9 +38,9 @@ public class IDbConnectionFactoryTests(TestDb testDb)
             testDb.Query(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -52,9 +52,9 @@ public class IDbConnectionFactoryTests(TestDb testDb)
             testDb.QuerySingle(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]
@@ -110,9 +110,9 @@ public class IDbConnectionFactoryTestsAsync(TestDb testDb)
             await testDb.QueryAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -124,9 +124,9 @@ public class IDbConnectionFactoryTestsAsync(TestDb testDb)
             await testDb.QuerySingleAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]

@@ -49,10 +49,10 @@ public class IDbTransactionTests(TestDb testDb)
             tran.Query(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
         tran.Commit();
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -67,10 +67,10 @@ public class IDbTransactionTests(TestDb testDb)
             tran.QuerySingle(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
         tran.Commit();
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public class IDbTransactionTests(TestDb testDb)
             SELECT description FROM test_values WHERE description = @description;
             """,
             p,
-            rd => rd.ReadString("description"));
+            TestClassReader.Map);
 
         Assert.NotNull(exists);
     }
@@ -136,7 +136,7 @@ public class IDbTransactionTests(TestDb testDb)
             SELECT description FROM test_values WHERE description = @description;
             """,
             p,
-            rd => rd.ReadString("description"));
+            TestClassReader.Map);
 
         Assert.Null(exists);
     }
@@ -190,10 +190,10 @@ public class IDbTransactionTestsAsync(TestDb testDb)
             await tran.QueryAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
         tran.Commit();
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -208,10 +208,10 @@ public class IDbTransactionTestsAsync(TestDb testDb)
             await tran.QuerySingleAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
         tran.Commit();
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]
@@ -253,7 +253,7 @@ public class IDbTransactionTestsAsync(TestDb testDb)
             SELECT description FROM test_values WHERE description = @description;
             """,
             p,
-            rd => rd.ReadString("description"));
+            TestClassReader.Map);
 
         Assert.NotNull(exists);
     }
@@ -277,7 +277,7 @@ public class IDbTransactionTestsAsync(TestDb testDb)
             SELECT description FROM test_values WHERE description = @description;
             """,
             p,
-            rd => rd.ReadString("description"));
+            TestClassReader.Map);
 
         Assert.Null(exists);
     }

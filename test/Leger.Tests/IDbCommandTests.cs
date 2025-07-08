@@ -47,9 +47,9 @@ public class IDbCommandTests(TestDb testDb)
             cmd.Query(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -64,9 +64,9 @@ public class IDbCommandTests(TestDb testDb)
             cmd.QuerySingle(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]
@@ -134,9 +134,9 @@ public class IDbCommandTestsAsync(TestDb testDb)
             await cmd.QueryAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result.First());
+        Assert.Equal(expected, result.First().Description);
     }
 
     [Fact]
@@ -151,9 +151,9 @@ public class IDbCommandTestsAsync(TestDb testDb)
             await cmd.QuerySingleAsync(
                 "SELECT @description AS description",
                 new("description", expected),
-                rd => rd.ReadString("description"));
+                TestClassReader.Map);
 
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Description);
     }
 
     [Fact]
