@@ -261,14 +261,44 @@ Leger provides enhanced exception output to help you quickly identify and resolv
     - Thrown when an error occurs during the execution of a command.
     - Includes the SQL statement that was executed,
     - Or, the field name and value that caused the error.
-- `DatabaseConnectionException` - thrown when a connection cannot be established.
-- `DatabaseTransactionException` - thrown when an error occurs during a transaction.
+- `DatabaseConnectionException`
+    - Thrown when a connection cannot be established.
+    - Alias for `new DatabaseExecutionException(DatabaseErrorCode.CouldNotOpenConnection, ...)`.
+- `DatabaseTransactionException`
+    - Thrown when an error occurs during a transaction.
+    - Alias for `new DatabaseExecutionException(DatabaseErrorCode.CouldNotBeginTransaction, ...)`.
+
+DatabaseExecutionException receives context through the `DatabaseErrorCode` enum:
+
+```csharp
+public enum DatabaseErrorCode
+{
+    /// <summary> Could not open connection. </summary>
+    CouldNotOpenConnection = 1000,
+
+    /// <summary>Could not begin transaction. </summary>
+    CouldNotBeginTransaction = 2000,
+
+    /// <summary>Could not commit transaction. </summary>
+    CouldNotExecuteNonQuery = 4000,
+    /// <summary>Could not execute scalar. </summary>
+    CouldNotExecuteScalar = 4001,
+    /// <summary>Could not execute reader. </summary>
+    CouldNotExecuteReader = 4002,
+
+    /// <summary>Could not cast value. </summary>
+    CouldNotCastValue = 5000,
+
+    /// <summary>Field not found in the database record.</summary>
+    FieldNotFound = 6000,
+}
+```
 
 ## Contribute
 
-Thank you for considering contributing to Leger, and to those who have already contributed! We appreciate (and actively resolve) PRs of all shapes and sizes.
+Thank you for considering contributing to Leger, and to those who have already contributed! I appreciate (and actively resolve) PRs of all shapes and sizes.
 
-We kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
+I kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
 
 If functionality is added to the API, or changed, please kindly update the relevant [document](https://github.com/pimbrouwers/leger/tree/master/docs). Unit tests must also be added and/or updated before a pull request can be successfully merged.
 
