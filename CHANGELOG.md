@@ -2,16 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## [1.1.0] - ???
 
 ### Added
 
-- `netstandard2.0` support.
+- `netstandard2.1` support.
 - `DatabaseErrorCode.FieldNotFound` to improve error output when a field is not found.
-
-### Removed
-
-- Nullable reference types support.
 
 ## [1.0.1] - 2025-02-07
 

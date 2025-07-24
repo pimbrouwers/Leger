@@ -86,7 +86,7 @@
             rd.ReadRefValueByField(field, rd.StreamBytes) ?? new byte[] { };
 
         /// <summary> Reads a nullable string from the <see cref="IDataRecord"/>. </summary>
-        public static string ReadNullableString(this IDataRecord rd, string field) =>
+        public static string? ReadNullableString(this IDataRecord rd, string field) =>
             rd.ReadRefValueByField(field, rd.GetString);
 
         /// <summary> Reads a nullable char from the <see cref="IDataRecord"/>. </summary>

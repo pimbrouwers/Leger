@@ -26,7 +26,7 @@ namespace Leger
         public static void Execute(
             this IDbConnectionFactory connectionFactory,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30)
         {
@@ -42,7 +42,7 @@ namespace Leger
         public static async Task ExecuteAsync(
             this IDbConnectionFactory connectionFactory,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
             CancellationToken? cancellationToken = null)
@@ -89,10 +89,10 @@ namespace Leger
         /// <summary>
         /// Executes a command and returns a scalar.
         /// </summary>
-        public static object Scalar(
+        public static object? Scalar(
             this IDbConnectionFactory connectionFactory,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30)
         {
@@ -105,10 +105,10 @@ namespace Leger
         /// <summary>
         /// Executes a command and returns a scalar asynchronously.
         /// </summary>
-        public static async Task<object> ScalarAsync(
+        public static async Task<object?> ScalarAsync(
             this IDbConnectionFactory connectionFactory,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
             CancellationToken? cancellationToken = null)

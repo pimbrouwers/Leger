@@ -18,7 +18,7 @@
         public static void Execute(
             this IDbCommand command,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30)
         {
@@ -35,7 +35,7 @@
         public static Task ExecuteAsync(
             this IDbCommand command,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
             CancellationToken? cancellationToken = null)
@@ -80,10 +80,10 @@
         /// <summary>
         /// Executes a command and returns a scalar.
         /// </summary>
-        public static object Scalar(
+        public static object? Scalar(
             this IDbCommand command,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30)
         {
@@ -96,10 +96,10 @@
         /// <summary>
         /// Executes a command and returns a scalar asynchronously.
         /// </summary>
-        public static Task<object> ScalarAsync(
+        public static Task<object?> ScalarAsync(
             this IDbCommand command,
             string commandText,
-            DbParams dbParams = null,
+            DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
             CancellationToken? cancellationToken = null)

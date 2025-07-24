@@ -51,7 +51,7 @@
             }
             else
             {
-                return default;
+                return default!;
             }
         }
 
@@ -77,7 +77,7 @@
         public static T MapFirstNext<T>(
             this IDataReader rd,
             Func<IDataReader, T> map) =>
-            rd.NextResult() ? rd.MapFirst(map) : default;
+            rd.NextResult() ? rd.MapFirst(map) : default!;
 
         /// <summary>
         /// Maps the <see cref="IDataReader"/> to a collection of <typeparamref name="T"/> asynchronously.
@@ -148,11 +148,11 @@
                     return map(dbRd);
                 }
 
-                return default;
+                return default!;
             }
             else
             {
-                return default;
+                return default!;
             }
         }
 
@@ -176,11 +176,11 @@
                     return await rd.MapFirstAsync(map, cancellationToken);
                 }
 
-                return default;
+                return default!;
             }
             else
             {
-                return default;
+                return default!;
             }
         }
     }

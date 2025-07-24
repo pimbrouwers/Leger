@@ -67,7 +67,7 @@
         /// </summary>
         /// <param name="dbType"></param>
         /// <param name="value"></param>
-        public DbTypeParam(DbType dbType, object value = null)
+        public DbTypeParam(DbType dbType, object? value = null)
         {
             DbType = dbType;
             Value = value ?? DBNull.Value;

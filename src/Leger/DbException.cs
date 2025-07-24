@@ -45,7 +45,7 @@
         public DatabaseException(
             DatabaseErrorCode errorCode,
             string message,
-            Exception innerEx = null) :
+            Exception? innerEx = null) :
             base(message, innerEx)
         {
             ErrorCode = errorCode;
@@ -97,7 +97,7 @@
         public DatabaseExecutionException(
             DatabaseErrorCode errorCode,
             string sql,
-            Exception ex = null) : base(errorCode, sql, ex)
+            Exception? ex = null) : base(errorCode, sql, ex)
         { }
     }
 }

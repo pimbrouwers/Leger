@@ -6,7 +6,7 @@
 ![aot](https://img.shields.io/badge/aot-compatible-green.svg)
 ![net8.0](https://img.shields.io/badge/net-8.0-blue.svg)
 ![net6.0](https://img.shields.io/badge/net-6.0-blue.svg)
-![netstandard2.0](https://img.shields.io/badge/netstandard-2.0-blue.svg)
+![netstandard2.1](https://img.shields.io/badge/netstandard-2.1-blue.svg)
 
 Léger is a library that aims to make working with [ADO.NET](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/ado-net-overview) from C# *a lot* simpler. Functionality is delivered through an API that bears a resemblance to [Dapper](https://github.com/DapperLib/Dapper) with a focus on manual mapping and a few extra goodies built-in.
 
