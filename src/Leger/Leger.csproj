@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>Leger</AssemblyName>
-    <Version>1.1.0-beta1</Version>
+    <Version>1.1.0</Version>
 
     <!-- General info -->
     <Description>C# data access with no reflection, no magic, no surprises. Light as air.</Description>
