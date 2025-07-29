@@ -253,6 +253,25 @@ public static Guid? ReadNullableGuid(this IDataRecord rd, string field);
 public static DateTime? ReadNullableDateTime(this IDataRecord rd, string field);
 ```
 
+### High Performance Mapping
+
+The `IDataRecord` extension methods are designed to be performant, avoiding reflection and unnecessary boxing/unboxing. They operate without caching, ensuring that each call retrieves the value directly from the underlying data source. This however comes at a cost of invoking `GetOrdinal(name)` and checking `DBNull` for each field read, which is a trade-off for performance and simplicity.
+
+In application hot paths, or where you are looking for near zero overhead, you can use the built-in `Get[Type](int i)` methods of `IDataRecord` directly, which are optimized for performance. This requires you to know the index of the field you want to read, but will yield the best performance.
+
+An example of using the `Get[Type](int i)` methods directly, revisiting the `AuthorReader` example:
+
+```csharp
+public static class AuthorReader
+{
+    public static Author Map(IDataRecord rd) =>
+        new(AuthorId = rd.GetInt32(0),
+            FullName = rd.GetString(1));
+}
+```
+
+> Note the similarity to the previous example, but now using `GetInt32(0)` and `GetString(1)` instead of the extension methods. This is a more performant approach, especially in scenarios where you are reading many records in a tight loop.
+
 ## Errors and Exceptions
 
 Leger provides enhanced exception output to help you quickly identify and resolve issues. The following exceptions are thrown:
