@@ -1,5 +1,4 @@
-namespace Leger
-{
+namespace Leger {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -9,8 +8,7 @@ namespace Leger
     /// <summary>
     /// IDbTransaction extensions.
     /// </summary>
-    public static class IDbTransactionExtensions
-    {
+    public static class IDbTransactionExtensions {
         /// <summary>
         /// Executes a command.
         /// </summary>
@@ -19,12 +17,9 @@ namespace Leger
             string commandText,
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                command.Execute(commandText, dbParams, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            command.Execute(commandText, dbParams, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -36,12 +31,9 @@ namespace Leger
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                await command.ExecuteAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            await command.ExecuteAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -52,12 +44,9 @@ namespace Leger
             string commandText,
             IEnumerable<DbParams> paramList,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                command.ExecuteMany(commandText, paramList, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            command.ExecuteMany(commandText, paramList, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -69,12 +58,9 @@ namespace Leger
             IEnumerable<DbParams> paramList,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                await command.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            await command.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -85,12 +71,9 @@ namespace Leger
             string commandText,
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return command.Scalar(commandText, dbParams ?? new DbParams(), commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            return command.Scalar(commandText, dbParams ?? new DbParams(), commandType, commandTimeout);
         }
 
         /// <summary>
@@ -102,12 +85,9 @@ namespace Leger
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return await command.ScalarAsync(commandText, dbParams ?? new DbParams(), commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            return await command.ScalarAsync(commandText, dbParams ?? new DbParams(), commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -120,12 +100,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return command.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            return command.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -151,12 +128,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            return await command.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -182,12 +156,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            return command.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -213,12 +184,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            return await command.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -245,12 +213,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return command.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var command = transaction.CreateTransactionCommand();
+            return command.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -279,13 +244,11 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var command = transaction.CreateTransactionCommand())
-            {
-                return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
+
 
         /// <summary>
         /// Executes a command, applies the <paramref name="map"/> function to the
@@ -302,9 +265,96 @@ namespace Leger
             CancellationToken? cancellationToken = null) =>
             transaction.ReadAsync(commandText, new DbParams(), map, commandBehavior, commandType, commandTimeout, cancellationToken);
 
+        /// <summary>
+        /// Executes a command, applies the <paramref name="map"/> function to the
+        /// <see cref="IDataReader"/>, and returns the result of type
+        /// <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        public static async Task<T> ReadAsync<T>(
+            this IDbTransaction transaction,
+            string commandText,
+            DbParams dbParams,
+            Func<IDataReader, Task<T>> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            return await command.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
+        }
+
+
+        /// <summary>
+        /// Executes a command, applies the <paramref name="map"/> function to the
+        /// <see cref="IDataReader"/>, and returns the result of type
+        /// <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        public static Task<T> ReadAsync<T>(
+            this IDbTransaction transaction,
+            string commandText,
+            Func<IDataReader, Task<T>> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) =>
+            transaction.ReadAsync(commandText, new DbParams(), map, commandBehavior, commandType, commandTimeout, cancellationToken);
+
+        /// <summary>
+        /// Streams the results of a command asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="transaction"></param>
+        /// <param name="commandText"></param>
+        /// <param name="dbParams"></param>
+        /// <param name="map"></param>
+        /// <param name="commandBehavior"></param>
+        /// <param name="commandType"></param>
+        /// <param name="commandTimeout"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> StreamAsync<T>(
+            this IDbTransaction transaction,
+            string commandText,
+            DbParams dbParams,
+            Func<IDataReader, T> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            await foreach (var item in command.StreamAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken)) {
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Streams the results of a command asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="transaction"></param>
+        /// <param name="commandText"></param>
+        /// <param name="map"></param>
+        /// <param name="commandBehavior"></param>
+        /// <param name="commandType"></param>
+        /// <param name="commandTimeout"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> StreamAsync<T>(
+            this IDbTransaction transaction,
+            string commandText,
+            Func<IDataReader, T> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var command = transaction.CreateTransactionCommand();
+            await foreach (var item in command.StreamAsync(commandText, new DbParams(), map, commandBehavior, commandType, commandTimeout, cancellationToken)) {
+                yield return item;
+            }
+        }
+
         private static IDbCommand CreateTransactionCommand(
-            this IDbTransaction transaction)
-        {
+            this IDbTransaction transaction) {
             var command =
                 transaction.Connection?.CreateCommand() ??
                 throw new DatabaseTransactionException();

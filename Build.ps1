@@ -1,15 +1,12 @@
 [CmdletBinding()]
 param (
-  [Parameter(HelpMessage = "The project to reference.")]
-  [string] $Project,
+  [Parameter(HelpMessage = 'The action to execute.')]
+  [ValidateSet('Build', 'Test', 'Pack')]
+  [string] $Action = 'Build',
 
-  [Parameter(HelpMessage = "The action to execute.")]
-  [ValidateSet("Build", "Test", "Pack")]
-  [string] $Action = "Build",
-
-  [Parameter(HelpMessage = "The msbuild configuration to use.")]
-  [ValidateSet("Debug", "Release")]
-  [string] $Configuration = "Debug",
+  [Parameter(HelpMessage = 'The msbuild configuration to use.')]
+  [ValidateSet('Debug', 'Release')]
+  [string] $Configuration = 'Debug',
 
 
   [switch] $NoRestore,
@@ -24,20 +21,13 @@ function RunCommand {
 }
 
 $rootDir = $PSScriptRoot
-$actionDir = $rootDir
 
 switch ($Action) {
-  { "Pack", "Test" -eq $_ } {
-    if (!$Project) {
-      Write-Error "The project parameter is required when packing."
-      exit 1
-    }
-    $actionDir = Join-Path -Path $rootDir -ChildPath $Project
+  { 'Pack' -eq $_ } {
+    $actionDir = 'src/Leger'
   }
-  Default {
-    if ($Project) {
-      $actionDir = Join-Path -Path $rootDir -ChildPath $Project
-    }
+  default {
+    $actionDir = $rootDir
   }
 }
 
@@ -50,7 +40,7 @@ if ($Clean) {
 }
 
 switch ($Action) {
-  "Test" { RunCommand "dotnet test `"$actionDir`"" }
-  "Pack" { RunCommand "dotnet pack `"$actionDir`" -c $Configuration --include-symbols --include-source" }
-  Default { RunCommand "dotnet build `"$actionDir`" -c $Configuration" }
+  'Test' { RunCommand "dotnet test `"$actionDir`"" }
+  'Pack' { RunCommand "dotnet pack `"$actionDir`" -c $Configuration --include-symbols --include-source" }
+  default { RunCommand "dotnet build `"$actionDir`" -c $Configuration" }
 }

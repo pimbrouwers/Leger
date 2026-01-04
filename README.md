@@ -17,6 +17,7 @@ Léger is a library that aims to make working with [ADO.NET](https://docs.micros
 - Safe value reading via `IDataRecord` and `IDataReader` [extensions](#idatareader-extension-methods).
 - [Enhanced](#exceptions) exception output.
 - [Async](#an-example-using-sqlite) versions of all data access methods.
+- Support for `IAsyncEnumerable<T>` via the [StreamAsync](#stream-results-asynchronously-using-iasyncenumerablet) methods.
 
 ## Design Goals
 
@@ -79,6 +80,8 @@ CREATE TABLE author (
 And domain model:
 
 ```csharp
+using Leger;
+
 public record Author(
     int AuthorId,
     string FullName);
@@ -88,12 +91,17 @@ public static class AuthorReader
     public static Author Map(IDataRecord rd) =>
         new(AuthorId = rd.ReadInt32("author_id"),
             FullName = rd.ReadString("full_name"));
+        // or, if you the indexes are known and fixed, for better performance:
+        new(AuthorId = rd.ReadInt32(0),
+            FullName = rd.ReadString(1));
 }
 ```
 
 ### Query for multiple strongly-type results
 
 ```csharp
+using Leger;
+
 var authors = connection.Query("""
     SELECT author_id, full_name FROM author
     """,
@@ -109,6 +117,8 @@ var authors = await connection.QueryAsync("""
 ### Query for a single strongly-type result
 
 ```csharp
+using Leger;
+
 // `QuerySingle` is optimized to dispose the `IDataReader` after safely reading the first `IDataRecord`.
 var author = connection.QuerySingle("""
     SELECT author_id, full_name FROM author WHERE author_id = @author_id
@@ -127,6 +137,8 @@ var author = await connection.QuerySingleAsync("""
 ### Execute a statement
 
 ```csharp
+using Leger;
+
 connection.Execute("""
     INSERT INTO author (full_name) VALUES (@full_name)
     """,
@@ -142,6 +154,8 @@ await connection.ExecuteAsync("""
 ### Execute a statement multiple times
 
 ```csharp
+using Leger;
+
 public record NewAuthor(
     string FullName);
 
@@ -162,6 +176,8 @@ await connection.ExecuteManyAsync("""
 ### Execute a statement transactionally
 
 ```csharp
+using Leger;
+
 using var transaction = connection.CreateTransaction();
 
 transaction.Execute("""
@@ -178,6 +194,8 @@ transaction.Commit();
 ### Execute a scalar command (single value)
 
 ```csharp
+using Leger;
+
 var count = connection.Scalar("""
     SELECT COUNT(*) AS author_count FROM author
     """,
@@ -190,6 +208,43 @@ var count = await connection.ScalarAsync("""
     new("full_name", "John Doe"));
 ```
 
+### Manually read data using `IDataReader`
+
+```csharp
+using Leger;
+
+var authors = connection.Read("""
+    SELECT author_id, full_name FROM author
+    """,
+    rd => rd.Map(AuthorReader.Map));
+
+// async
+var authors = await connection.ReadAsync("""
+    SELECT author_id, full_name FROM author
+    """,
+    rd => rd.Map(AuthorReader.Map));
+
+// async, async mapping
+var authors = await connection.ReadAsync("""
+    SELECT author_id, full_name FROM author
+    """,
+    async rd => await rd.MapAsync(AuthorReader.Map));
+```
+
+### Stream results asynchronously using `IAsyncEnumerable<T>`
+
+```csharp
+using Leger;
+
+await foreach (var author in connection.StreamAsync("""
+    SELECT author_id, full_name FROM author
+    """,
+    AuthorReader.Map))
+{
+    Console.WriteLine($"{author.AuthorId}: {author.FullName}");
+}
+```
+
 ## `IDbConnectionFactory`
 
 The `IDbConnectionFactory` interface is provided to allow for the creation of `IDbConnection` instances. This is useful when you want to abstract the creation of connections and even moreso in multi-data source scenarios.
@@ -197,6 +252,8 @@ The `IDbConnectionFactory` interface is provided to allow for the creation of `I
 Implementing the interface is straightforward, an example using `System.Data.Sqlite` is shown below:
 
 ```csharp
+using Leger;
+
 public class SqliteConnectionFactory(connectionString)
     : IDbConnectionFactory
 {
@@ -251,13 +308,48 @@ public static double? ReadNullableDouble(this IDataRecord rd, string field);
 public static float? ReadNullableFloat(this IDataRecord rd, string field);
 public static Guid? ReadNullableGuid(this IDataRecord rd, string field);
 public static DateTime? ReadNullableDateTime(this IDataRecord rd, string field);
+
+public static string ReadString(this IDataRecord rd, int i);
+public static char ReadChar(this IDataRecord rd, int i);
+public static bool ReadBoolean(this IDataRecord rd, int i);
+public static bool ReadBool(this IDataRecord rd, int i);
+public static byte ReadByte(this IDataRecord rd, int i);
+public static short ReadInt16(this IDataRecord rd, int i);
+public static short ReadShort(this IDataRecord rd, int i);
+public static int ReadInt32(this IDataRecord rd, int i);
+public static int ReadInt(this IDataRecord rd, int i);
+public static int ReadInt(this IDataRecord rd, int i);
+public static long ReadInt64(this IDataRecord rd, int i);
+public static long ReadLong(this IDataRecord rd, int i);
+public static decimal ReadDecimal(this IDataRecord rd, int i);
+public static double ReadDouble(this IDataRecord rd, int i);
+public static float ReadFloat(this IDataRecord rd, int i);
+public static Guid ReadGuid(this IDataRecord rd, int i);
+public static DateTime ReadDateTime(this IDataRecord rd, int i);
+public static byte[] ReadBytes(this IDataRecord rd, int i);
+
+public static bool? ReadNullableBoolean(this IDataRecord rd, int i);
+public static bool? ReadNullableBool(this IDataRecord rd, int i);
+public static byte? ReadNullableByte(this IDataRecord rd, int i);
+public static short? ReadNullableInt16(this IDataRecord rd, int i);
+public static short? ReadNullableShort(this IDataRecord rd, int i);
+public static int? ReadNullableInt32(this IDataRecord rd, int i);
+public static int? ReadNullableInt(this IDataRecord rd, int i);
+public static int? ReadNullableInt(this IDataRecord rd, int i);
+public static long? ReadNullableInt64(this IDataRecord rd, int i);
+public static long? ReadNullableLong(this IDataRecord rd, int i);
+public static decimal? ReadNullableDecimal(this IDataRecord rd, int i);
+public static double? ReadNullableDouble(this IDataRecord rd, int i);
+public static float? ReadNullableFloat(this IDataRecord rd, int i);
+public static Guid? ReadNullableGuid(this IDataRecord rd, int i);
+public static DateTime? ReadNullableDateTime(this IDataRecord rd, int i);
 ```
 
 ### High Performance Mapping
 
 The `IDataRecord` extension methods are designed to be performant, avoiding reflection and unnecessary boxing/unboxing. They operate without caching, ensuring that each call retrieves the value directly from the underlying data source. This however comes at a cost of invoking `GetOrdinal(name)` and checking `DBNull` for each field read, which is a trade-off for performance and simplicity.
 
-In application hot paths, or where you are looking for near zero overhead, you can use the built-in `Get[Type](int i)` methods of `IDataRecord` directly, which are optimized for performance. This requires you to know the index of the field you want to read, but will yield the best performance.
+To reduce the overhead of name-based lookups, you can use the index-based overloads of the extension methods. In application hot paths, or where you are looking for near zero overhead, you can use the built-in `Get[Type](int i)` methods of `IDataRecord` directly, which are optimized for performance. This requires you to know the index of the field you want to read, but will yield the best performance.
 
 An example of using the `Get[Type](int i)` methods directly, revisiting the `AuthorReader` example:
 

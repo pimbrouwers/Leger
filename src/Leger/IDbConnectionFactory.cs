@@ -1,5 +1,4 @@
-namespace Leger
-{
+namespace Leger {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -9,8 +8,7 @@ namespace Leger
     /// <summary>
     /// Represents a factory for creating <see cref="IDbConnection"/> instances.
     /// </summary>
-    public interface IDbConnectionFactory
-    {
+    public interface IDbConnectionFactory {
         /// <summary> Creates and opens a connection to the database. </summary>
         IDbConnection CreateConnection();
     }
@@ -18,8 +16,7 @@ namespace Leger
     /// <summary>
     /// IDbConnectionFactory extensions.
     /// </summary>
-    public static class IDbConnectionFactoryExtensions
-    {
+    public static class IDbConnectionFactoryExtensions {
         /// <summary>
         /// Executes a command.
         /// </summary>
@@ -28,12 +25,9 @@ namespace Leger
             string commandText,
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                connection.Execute(commandText, dbParams, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            connection.Execute(commandText, dbParams, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -45,12 +39,9 @@ namespace Leger
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                await connection.ExecuteAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            await connection.ExecuteAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -61,12 +52,9 @@ namespace Leger
             string commandText,
             IEnumerable<DbParams> paramList,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                connection.ExecuteMany(commandText, paramList, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            connection.ExecuteMany(commandText, paramList, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -78,12 +66,9 @@ namespace Leger
             IEnumerable<DbParams> paramList,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                await connection.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            await connection.ExecuteManyAsync(commandText, paramList, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -94,12 +79,9 @@ namespace Leger
             string commandText,
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.Scalar(commandText, dbParams, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.Scalar(commandText, dbParams, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -111,12 +93,9 @@ namespace Leger
             DbParams? dbParams = null,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.ScalarAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.ScalarAsync(commandText, dbParams, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -129,12 +108,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.Query(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -146,12 +122,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.Query(commandText, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.Query(commandText, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -165,12 +138,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QueryAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -183,12 +153,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.QueryAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QueryAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -201,12 +168,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.QuerySingle(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -218,12 +182,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.QuerySingle(commandText, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.QuerySingle(commandText, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -237,12 +198,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QuerySingleAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -255,12 +213,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.QuerySingleAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QuerySingleAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -274,12 +229,9 @@ namespace Leger
             Func<IDataReader, T> map,
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
-            int commandTimeout = 30)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return connection.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
-            }
+            int commandTimeout = 30) {
+            using var connection = connectionFactory.CreateConnection();
+            return connection.Read(commandText, dbParams, map, commandBehavior, commandType, commandTimeout);
         }
 
         /// <summary>
@@ -308,12 +260,9 @@ namespace Leger
             CommandBehavior commandBehavior = CommandBehavior.Default,
             CommandType commandType = CommandType.Text,
             int commandTimeout = 30,
-            CancellationToken? cancellationToken = null)
-        {
-            using (var connection = connectionFactory.CreateConnection())
-            {
-                return await connection.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
-            }
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
         }
 
         /// <summary>
@@ -330,5 +279,93 @@ namespace Leger
             int commandTimeout = 30,
             CancellationToken? cancellationToken = null) =>
             connectionFactory.ReadAsync(commandText, new DbParams(), map, commandBehavior, commandType, commandTimeout, cancellationToken);
+
+        /// <summary>
+        /// Executes a command, applies the <paramref name="map"/> function to the
+        /// <see cref="IDataReader"/>, and returns the result of type
+        /// <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        public static async Task<T> ReadAsync<T>(
+            this IDbConnectionFactory connectionFactory,
+            string commandText,
+            DbParams dbParams,
+            Func<IDataReader, Task<T>> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.ReadAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes a command, applies the <paramref name="map"/> function to the
+        /// <see cref="IDataReader"/>, and returns the result of type
+        /// <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        public static Task<T> ReadAsync<T>(
+            this IDbConnectionFactory connectionFactory,
+            string commandText,
+            Func<IDataReader, Task<T>> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) =>
+            connectionFactory.ReadAsync(commandText, new DbParams(), map, commandBehavior, commandType, commandTimeout, cancellationToken);
+
+
+        /// <summary>
+        /// Streams the results of a command asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connectionFactory"></param>
+        /// <param name="commandText"></param>
+        /// <param name="dbParams"></param>
+        /// <param name="map"></param>
+        /// <param name="commandBehavior"></param>
+        /// <param name="commandType"></param>
+        /// <param name="commandTimeout"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> StreamAsync<T>(
+            this IDbConnectionFactory connectionFactory,
+            string commandText,
+            DbParams dbParams,
+            Func<IDataReader, T> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            await foreach (var item in connection.StreamAsync(commandText, dbParams, map, commandBehavior, commandType, commandTimeout, cancellationToken)) {
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Streams the results of a command asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connectionFactory"></param>
+        /// <param name="commandText"></param>
+        /// <param name="map"></param>
+        /// <param name="commandBehavior"></param>
+        /// <param name="commandType"></param>
+        /// <param name="commandTimeout"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> StreamAsync<T>(
+            this IDbConnectionFactory connectionFactory,
+            string commandText,
+            Func<IDataReader, T> map,
+            CommandBehavior commandBehavior = CommandBehavior.Default,
+            CommandType commandType = CommandType.Text,
+            int commandTimeout = 30,
+            CancellationToken? cancellationToken = null) {
+            using var connection = connectionFactory.CreateConnection();
+            await foreach (var item in connection.StreamAsync(commandText, map, commandBehavior, commandType, commandTimeout, cancellationToken)) {
+                yield return item;
+            }
+        }
     }
 }

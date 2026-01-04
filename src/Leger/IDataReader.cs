@@ -1,5 +1,4 @@
-﻿namespace Leger
-{
+namespace Leger {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -11,8 +10,7 @@
     /// <summary>
     /// Extensions for <see cref="IDataReader"/>.
     /// </summary>
-    public static class IDataReaderExtensions
-    {
+    public static class IDataReaderExtensions {
         /// <summary>
         /// Maps the <see cref="IDataReader"/> to a collection of <typeparamref name="T"/>.
         /// </summary>
@@ -22,16 +20,16 @@
         /// <returns></returns>
         public static IEnumerable<T> Map<T>(
             this IDataReader rd,
-            Func<IDataReader, T> map)
-        {
-            var records = new List<T>();
+            Func<IDataReader, T> map) {
+            // we materialize the list here to avoid issues with deferred execution
+            // and disposed readers
+            var results = new List<T>();
 
-            while (rd.Read())
-            {
-                records.Add(map(rd));
+            while (rd.Read()) {
+                results.Add(map(rd));
             }
 
-            return records;
+            return results;
         }
 
         /// <summary>
@@ -43,14 +41,11 @@
         /// <returns></returns>
         public static T MapFirst<T>(
             this IDataReader rd,
-            Func<IDataReader, T> map)
-        {
-            if (rd.Read())
-            {
+            Func<IDataReader, T> map) {
+            if (rd.Read()) {
                 return map(rd);
             }
-            else
-            {
+            else {
                 return default!;
             }
         }
@@ -90,18 +85,20 @@
         public static async Task<IEnumerable<T>> MapAsync<T>(
             this IDataReader rd,
             Func<IDataReader, T> map,
-            CancellationToken? cancellationToken = null)
-        {
-            var records = new List<T>();
-            if (rd is DbDataReader dbRd)
-            {
-                while (await dbRd.ReadAsync(cancellationToken ?? CancellationToken.None))
-                {
-                    records.Add(map(rd));
+            CancellationToken? cancellationToken = null) {
+            // we materialize the list here to avoid issues with deferred execution
+            // and disposed readers
+            if (rd is DbDataReader dbRd) {
+                var results = new List<T>();
+
+                while (await dbRd.ReadAsync(cancellationToken ?? CancellationToken.None)) {
+                    results.Add(map(rd));
                 }
+
+                return results;
             }
 
-            return records;
+            return Enumerable.Empty<T>();
         }
 
         /// <summary>
@@ -115,12 +112,9 @@
         public static async Task<IEnumerable<T>> MapNextAsync<T>(
             this IDataReader rd,
             Func<IDataReader, T> map,
-            CancellationToken? cancellationToken = null)
-        {
-            if (rd is DbDataReader dbRd)
-            {
-                if (await dbRd.NextResultAsync(cancellationToken ?? CancellationToken.None))
-                {
+            CancellationToken? cancellationToken = null) {
+            if (rd is DbDataReader dbRd) {
+                if (await dbRd.NextResultAsync(cancellationToken ?? CancellationToken.None)) {
                     return await rd.MapAsync(map, cancellationToken);
                 }
             }
@@ -139,19 +133,15 @@
         public static async Task<T> MapFirstAsync<T>(
             this IDataReader rd,
             Func<IDataReader, T> map,
-            CancellationToken? cancellationToken = null)
-        {
-            if (rd is DbDataReader dbRd)
-            {
-                if (await dbRd.ReadAsync(cancellationToken ?? CancellationToken.None))
-                {
+            CancellationToken? cancellationToken = null) {
+            if (rd is DbDataReader dbRd) {
+                if (await dbRd.ReadAsync(cancellationToken ?? CancellationToken.None)) {
                     return map(dbRd);
                 }
 
                 return default!;
             }
-            else
-            {
+            else {
                 return default!;
             }
         }
@@ -167,20 +157,56 @@
         public static async Task<T> MapFirstNextAsync<T>(
             this IDataReader rd,
             Func<IDataReader, T> map,
-            CancellationToken? cancellationToken = null)
-        {
-            if (rd is DbDataReader dbRd)
-            {
-                if (await dbRd.NextResultAsync(cancellationToken ?? CancellationToken.None))
-                {
+            CancellationToken? cancellationToken = null) {
+            if (rd is DbDataReader dbRd) {
+                if (await dbRd.NextResultAsync(cancellationToken ?? CancellationToken.None)) {
                     return await rd.MapFirstAsync(map, cancellationToken);
                 }
 
                 return default!;
             }
-            else
-            {
+            else {
                 return default!;
+            }
+        }
+
+        /// <summary>
+        /// Maps the <see cref="IDataReader"/> to a collection of <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rd"></param>
+        /// <param name="map"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> MapStreamAsync<T>(
+            this IDataReader rd,
+            Func<IDataReader, T> map,
+            CancellationToken? cancellationToken = null) {
+            if (rd is DbDataReader dbRd) {
+                while (await dbRd.ReadAsync(cancellationToken ?? CancellationToken.None)) {
+                    yield return map(rd);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Maps the <see cref="IDataReader"/> to a single <typeparamref name="T"/> asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="rd"></param>
+        /// <param name="map"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<T> MapNextStreamAsync<T>(
+            this IDataReader rd,
+            Func<IDataReader, T> map,
+            CancellationToken? cancellationToken = null) {
+            if (rd is DbDataReader dbRd) {
+                if (await dbRd.NextResultAsync(cancellationToken ?? CancellationToken.None)) {
+                    await foreach (var item in rd.MapStreamAsync(map, cancellationToken)) {
+                        yield return item;
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿namespace Leger
-{
+namespace Leger {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -8,13 +7,11 @@
     /// <summary>
     /// Represents a database parameter.
     /// </summary>
-    public sealed class DbParams : Dictionary<string, object>
-    {
+    public sealed class DbParams : Dictionary<string, object> {
         /// <summary>
         /// Initializes a new instance of the <see cref="DbParams"/> class.
         /// </summary>
-        public DbParams()
-        {
+        public DbParams() {
         }
 
         /// <summary>
@@ -22,10 +19,8 @@
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public DbParams(string key, object value)
-        {
-            if (!this.ContainsKey(key))
-            {
+        public DbParams(string key, object value) {
+            if (!this.ContainsKey(key)) {
                 this[key] = value;
             }
         }
@@ -34,21 +29,17 @@
     /// <summary>
     /// Represents a database parameter extensions.
     /// </summary>
-    public static class DbParamsExtensions
-    {
+    public static class DbParamsExtensions {
         /// <summary>
         /// Adds a parameter to the <see cref="DbParams"/>.
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns></returns>
-        public static DbParams Add(this DbParams p1, DbParams p2)
-        {
+        public static DbParams Add(this DbParams p1, DbParams p2) {
             p2.ToList()
-              .ForEach(x =>
-              {
-                  if (!p1.ContainsKey(x.Key))
-                  {
+              .ForEach(x => {
+                  if (!p1.ContainsKey(x.Key)) {
                       p1.Add(x.Key, x.Value);
                   }
               });
@@ -60,15 +51,13 @@
     /// <summary>
     /// Represents a database parameter type.
     /// </summary>
-    public sealed class DbTypeParam
-    {
+    public sealed class DbTypeParam {
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTypeParam"/> class.
         /// </summary>
         /// <param name="dbType"></param>
         /// <param name="value"></param>
-        public DbTypeParam(DbType dbType, object? value = null)
-        {
+        public DbTypeParam(DbType dbType, object? value = null) {
             DbType = dbType;
             Value = value ?? DBNull.Value;
         }

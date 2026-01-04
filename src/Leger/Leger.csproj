@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <AssemblyName>Leger</AssemblyName>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
 
     <!-- General info -->
     <Description>C# data access with no reflection, no magic, no surprises. Light as air.</Description>
-    <Copyright>Copyright 2024 Pim Brouwers</Copyright>
+    <Copyright>Copyright 2024-2026 Pim Brouwers</Copyright>
     <Authors>East City Software, Pim Brouwers</Authors>
     <NeutralLanguage>en-CA</NeutralLanguage>
 
@@ -19,7 +19,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- AOT for net8.0 and greater -->
-    <IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net9.0'">true</IsAotCompatible>
+    <IsAotCompatible Condition="'$(TargetFramework)' == 'net8.0'">true</IsAotCompatible>
 
     <!-- NuGet config -->
     <PackageId>Leger</PackageId>
