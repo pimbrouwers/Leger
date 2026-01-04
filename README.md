@@ -55,8 +55,7 @@ var books = connection.Query("""
     new("author_id", 1),
     rd => rd.ReadString("name"));
 
-foreach(var book in books)
-{
+foreach(var book in books) {
     Console.WriteLine(book);
 }
 ```
@@ -86,8 +85,7 @@ public record Author(
     int AuthorId,
     string FullName);
 
-public static class AuthorReader
-{
+public static class AuthorReader {
     public static Author Map(IDataRecord rd) =>
         new(AuthorId = rd.ReadInt32("author_id"),
             FullName = rd.ReadString("full_name"));
@@ -239,8 +237,7 @@ using Leger;
 await foreach (var author in connection.StreamAsync("""
     SELECT author_id, full_name FROM author
     """,
-    AuthorReader.Map))
-{
+    AuthorReader.Map)) {
     Console.WriteLine($"{author.AuthorId}: {author.FullName}");
 }
 ```
@@ -255,8 +252,7 @@ Implementing the interface is straightforward, an example using `System.Data.Sql
 using Leger;
 
 public class SqliteConnectionFactory(connectionString)
-    : IDbConnectionFactory
-{
+    : IDbConnectionFactory {
     public IDbConnection CreateConnection() =>
         new SqliteConnection(connectionString);
 }
@@ -354,8 +350,7 @@ To reduce the overhead of name-based lookups, you can use the index-based overlo
 An example of using the `Get[Type](int i)` methods directly, revisiting the `AuthorReader` example:
 
 ```csharp
-public static class AuthorReader
-{
+public static class AuthorReader {
     public static Author Map(IDataRecord rd) =>
         new(AuthorId = rd.GetInt32(0),
             FullName = rd.GetString(1));
@@ -382,8 +377,7 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 DatabaseExecutionException receives context through the `DatabaseErrorCode` enum:
 
 ```csharp
-public enum DatabaseErrorCode
-{
+public enum DatabaseErrorCode {
     /// <summary> Could not open connection. </summary>
     CouldNotOpenConnection = 1000,
 
