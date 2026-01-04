@@ -373,44 +373,57 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 - `DatabaseTransactionException`
     - Thrown when an error occurs during a transaction.
     - Alias for `new DatabaseExecutionException(DatabaseErrorCode.CouldNotBeginTransaction, ...)`.
+- `DatabaseReadFieldException`
+    - Thrown when a field cannot be read from an `IDataRecord`.
+    - Includes the field name or index that caused the error.
 
 DatabaseExecutionException receives context through the `DatabaseErrorCode` enum:
 
 ```csharp
 public enum DatabaseErrorCode {
-    /// <summary> Could not open connection. </summary>
+    /// <summary> Could not open connection.</summary>
     CouldNotOpenConnection = 1000,
 
-    /// <summary>Could not begin transaction. </summary>
+    /// <summary>Could not begin transaction.</summary>
     CouldNotBeginTransaction = 2000,
 
-    /// <summary>Could not commit transaction. </summary>
+    /// <summary>Could not commit transaction.</summary>
     CouldNotExecuteNonQuery = 4000,
-    /// <summary>Could not execute scalar. </summary>
+    /// <summary>Could not execute scalar.</summary>
     CouldNotExecuteScalar = 4001,
-    /// <summary>Could not execute reader. </summary>
+    /// <summary>Could not execute reader.</summary>
     CouldNotExecuteReader = 4002,
+    /// <summary>Could not execute command because the command text is null or empty.</summary>
+    NoCommandText = 4003,
+    /// <summary>Could not execute command because the command type is invalid.</summary>
+    InvalidCommandType = 4004,
 
-    /// <summary>Could not cast value. </summary>
+    /// <summary>Could not cast value.</summary>
     CouldNotCastValue = 5000,
 
     /// <summary>Field not found in the database record.</summary>
     FieldNotFound = 6000,
+
+    /// <summary>Could not map data reader using the provided mapping function.</summary>
+    CouldNotMapDataReader = 7000,
+
+    /// <summary>Could not map first record from data reader using the provided mapping function.</summary>
+    CouldNotMapDataReaderFirst = 7001
 }
 ```
 
-## Contribute
+## Contributing
 
-Thank you for considering contributing to Leger, and to those who have already contributed! I appreciate (and actively resolve) PRs of all shapes and sizes.
+I kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/Leger/issues).
 
-I kindly ask that before submitting a pull request, you first submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
+If functionality is added to the API, or changed, please kindly update the relevant documentation. Unit tests must also be added and/or updated before a pull request can be successfully merged.
 
-If functionality is added to the API, or changed, please kindly update the relevant [document](https://github.com/pimbrouwers/leger/tree/master/docs). Unit tests must also be added and/or updated before a pull request can be successfully merged.
+Only pull requests which pass all build checks and comply with the general coding standard can be approved.
 
-Only pull requests which pass all build checks and comply with the general coding guidelines can be approved.
+## Find a bug?
 
-If you have any further questions, submit an [issue](https://github.com/pimbrouwers/leger/issues) or open a [discussion](https://github.com/pimbrouwers/leger/discussions).
+There's an [issue](https://github.com/pimbrouwers/Leger/issues) for that.
 
 ## License
 
-Licensed under [MIT](https://github.com/pimbrouwers/leger/blob/master/LICENSE).
+Licensed under [MIT](https://github.com/pimbrouwers/Leger/blob/master/LICENSE).
