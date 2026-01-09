@@ -192,18 +192,22 @@ transaction.Commit();
 ### Execute a scalar command (single value)
 
 ```csharp
+using System;
 using Leger;
 
 var count = connection.Scalar("""
     SELECT COUNT(*) AS author_count FROM author
     """,
     new("full_name", "John Doe"));
+// returns `object?`
+
 
 // async
 var count = await connection.ScalarAsync("""
     SELECT COUNT(*) AS author_count FROM author
     """,
     new("full_name", "John Doe"));
+// returns `object?` or `Task<object?>` if not awaited
 ```
 
 ### Manually read data using `IDataReader`
@@ -259,6 +263,35 @@ public class SqliteConnectionFactory(connectionString)
 ```
 
 The expectation is that the connection is left closed, and the API methods will open and close the connection as needed.
+
+The best part, is that `IDbConnectionFactory` implementations can be used directly with all Leger extension methods, for example:
+
+```csharp
+using Leger;
+
+var factory = new SqliteConnectionFactory("Data Source=author.db");
+
+// Query for multiple strongly-type results
+var authors = factory.Query("""
+    SELECT author_id, full_name FROM author
+    """,
+    AuthorReader.Map);
+
+// Query for a single strongly-type result
+var author = factory.QuerySingle("""
+    SELECT author_id, full_name FROM author WHERE author_id = @author_id
+    """,
+    new("author_id", authorId),
+    AuthorReader.Map);
+
+// Execute a statement
+factory.Execute("""
+    INSERT INTO author (full_name) VALUES (@full_name)
+    """,
+    new("full_name", "John Doe"));
+
+// and so on...
+```
 
 ## `IDataRecord` Extension Methods
 
