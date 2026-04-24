@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 
 - Create consistency in DBNull handling when working with `IDataRecord`.
 
-## [1.1.0] - 2025-07029
+## [1.1.0] - 2025-07-29
 
 ### Added
 
