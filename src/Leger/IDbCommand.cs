@@ -161,7 +161,7 @@ namespace Leger {
                 }
             }
 
-            return Task.FromResult<object?>(default);
+            return default;
         }
 
         /// <summary>

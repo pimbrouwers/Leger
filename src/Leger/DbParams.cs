@@ -133,7 +133,7 @@ namespace Leger {
         public static DbTypeParam String(string v) =>
             new DbTypeParam(DbType.String, v);
 
-        /// <summary> Gets the value as a time. </summary>
+        /// <summary> Gets the value as an unsigned short. </summary>
         public static DbTypeParam UInt16(ushort v) =>
             new DbTypeParam(DbType.UInt16, v);
 
