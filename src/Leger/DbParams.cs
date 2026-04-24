@@ -20,9 +20,7 @@ namespace Leger {
         /// <param name="key"></param>
         /// <param name="value"></param>
         public DbParams(string key, object value) {
-            if (!this.ContainsKey(key)) {
-                this[key] = value;
-            }
+            this[key] = value;
         }
     }
 

@@ -11,7 +11,7 @@ namespace Leger {
         /// <summary>Could not begin transaction.</summary>
         CouldNotBeginTransaction = 2000,
 
-        /// <summary>Could not commit transaction.</summary>
+        /// <summary>Could not execute non query.</summary>
         CouldNotExecuteNonQuery = 4000,
         /// <summary>Could not execute scalar.</summary>
         CouldNotExecuteScalar = 4001,

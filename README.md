@@ -50,7 +50,7 @@ using Leger;
 using var connection = new SqliteConnection("{your connection string}");
 
 var books = connection.Query("""
-    SELECT name FROM book WHERE author_id = @author_id"
+    SELECT name FROM book WHERE author_id = @author_id
     """,
     new("author_id", 1),
     rd => rd.ReadString("name"));
@@ -312,7 +312,6 @@ public static short ReadInt16(this IDataRecord rd, string field);
 public static short ReadShort(this IDataRecord rd, string field);
 public static int ReadInt32(this IDataRecord rd, string field);
 public static int ReadInt(this IDataRecord rd, string field);
-public static int ReadInt(this IDataRecord rd, string field);
 public static long ReadInt64(this IDataRecord rd, string field);
 public static long ReadLong(this IDataRecord rd, string field);
 public static decimal ReadDecimal(this IDataRecord rd, string field);
@@ -328,7 +327,6 @@ public static byte? ReadNullableByte(this IDataRecord rd, string field);
 public static short? ReadNullableInt16(this IDataRecord rd, string field);
 public static short? ReadNullableShort(this IDataRecord rd, string field);
 public static int? ReadNullableInt32(this IDataRecord rd, string field);
-public static int? ReadNullableInt(this IDataRecord rd, string field);
 public static int? ReadNullableInt(this IDataRecord rd, string field);
 public static long? ReadNullableInt64(this IDataRecord rd, string field);
 public static long? ReadNullableLong(this IDataRecord rd, string field);
@@ -347,7 +345,6 @@ public static short ReadInt16(this IDataRecord rd, int i);
 public static short ReadShort(this IDataRecord rd, int i);
 public static int ReadInt32(this IDataRecord rd, int i);
 public static int ReadInt(this IDataRecord rd, int i);
-public static int ReadInt(this IDataRecord rd, int i);
 public static long ReadInt64(this IDataRecord rd, int i);
 public static long ReadLong(this IDataRecord rd, int i);
 public static decimal ReadDecimal(this IDataRecord rd, int i);
@@ -363,7 +360,6 @@ public static byte? ReadNullableByte(this IDataRecord rd, int i);
 public static short? ReadNullableInt16(this IDataRecord rd, int i);
 public static short? ReadNullableShort(this IDataRecord rd, int i);
 public static int? ReadNullableInt32(this IDataRecord rd, int i);
-public static int? ReadNullableInt(this IDataRecord rd, int i);
 public static int? ReadNullableInt(this IDataRecord rd, int i);
 public static long? ReadNullableInt64(this IDataRecord rd, int i);
 public static long? ReadNullableLong(this IDataRecord rd, int i);
@@ -398,14 +394,12 @@ Leger provides enhanced exception output to help you quickly identify and resolv
 
 - `DatabaseExecutionException`
     - Thrown when an error occurs during the execution of a command.
-    - Includes the SQL statement that was executed,
-    - Or, the field name and value that caused the error.
 - `DatabaseConnectionException`
     - Thrown when a connection cannot be established.
-    - Alias for `new DatabaseExecutionException(DatabaseErrorCode.CouldNotOpenConnection, ...)`.
+    - Inherits from `DatabaseException` with `DatabaseErrorCode.CouldNotOpenConnection`.
 - `DatabaseTransactionException`
     - Thrown when an error occurs during a transaction.
-    - Alias for `new DatabaseExecutionException(DatabaseErrorCode.CouldNotBeginTransaction, ...)`.
+    - Inherits from `DatabaseException` with `DatabaseErrorCode.CouldNotBeginTransaction`.
 - `DatabaseReadFieldException`
     - Thrown when a field cannot be read from an `IDataRecord`.
     - Includes the field name or index that caused the error.
